@@ -1,5 +1,4 @@
 import React from 'react'
-import { Activity } from 'lucide-react'
 
 export const Navbar = () => {
   return (
@@ -7,7 +6,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-2">
-            <Activity className="h-6 w-6 text-cyan-400" />
+            <img src="/bizmri-logo.png" alt="BIZMRI Logo" className="h-8 w-8" />
             <span className="text-xl font-bold tracking-wider text-white">BIZMRI</span>
           </div>
           <div className="hidden md:block">
