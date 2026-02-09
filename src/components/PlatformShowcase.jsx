@@ -104,7 +104,7 @@ export const PlatformShowcase = () => {
         <div className="text-center mb-16">
           <Badge variant="cyan" className="mb-4">PLATFORM PREVIEW</Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            SEE RAIDAR IN ACTION.
+            SEE IT IN ACTION.
           </h2>
           <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed font-light">
             From assessment creation to executive reporting, explore the intelligence
@@ -127,7 +127,7 @@ export const PlatformShowcase = () => {
                   <div className="w-3 h-3 rounded-full bg-green-500/60"></div>
                 </div>
                 <span className="text-xs font-mono text-slate-500 hidden sm:inline">
-                  raidar.bizmri.com/{active.id}
+                  bizmri.com/{active.id}
                 </span>
               </div>
               <div className="flex items-center gap-2">
