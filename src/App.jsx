@@ -6,6 +6,7 @@ import { PrecisionDiagnostics } from './components/PrecisionDiagnostics'
 import { Solution } from './components/Solution'
 import { DiagnosticScan } from './components/DiagnosticScan'
 import { Comparison } from './components/Comparison'
+import { PlatformShowcase } from './components/PlatformShowcase'
 import { Reporting } from './components/Reporting'
 import { SocialProof } from './components/SocialProof'
 import { Footer } from './components/Footer'
@@ -21,6 +22,7 @@ function App() {
         <Solution />
         <DiagnosticScan />
         <Comparison />
+        <PlatformShowcase />
         <Reporting />
         <SocialProof />
       </main>

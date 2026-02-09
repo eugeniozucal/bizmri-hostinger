@@ -52,9 +52,9 @@ export const Hero = () => {
         </p>
       </div>
 
-      {/* Decorative Scan Lines */}
-      <div className="absolute top-1/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent z-10"></div>
-      <div className="absolute bottom-1/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent z-10"></div>
+      {/* Decorative Scan Lines — framing the content */}
+      <div className="absolute top-[18%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent z-10"></div>
+      <div className="absolute bottom-[10%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent z-10"></div>
     </section>
   )
 }
