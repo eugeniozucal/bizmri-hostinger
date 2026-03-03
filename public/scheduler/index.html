@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bizmri — Nicolas Content Scheduler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1e293b;
+            --cyan-500: #06b6d4;
+            --cyan-400: #22d3ee;
+            --teal-500: #14b8a6;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #334155;
+            --green-500: #22c55e;
+            --amber-500: #f59e0b;
+            --red-500: #ef4444;
+            --purple-500: #a855f7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+        .header {
+            background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+            padding: 16px 32px; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .logo {
+            font-size: 22px; font-weight: 800;
+            background: linear-gradient(135deg, var(--cyan-400), var(--teal-500));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .header-divider { width: 1px; height: 24px; background: var(--border); }
+        .header-title { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+        .header-stats { display: flex; gap: 28px; }
+        .stat-value { font-size: 22px; font-weight: 700; color: var(--cyan-400); text-align: center; }
+        .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
+
+        .nav-bar {
+            display: flex; align-items: center; gap: 6px;
+            padding: 10px 32px; background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+        }
+        .nav-btn {
+            padding: 7px 18px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            color: var(--text-muted); cursor: pointer; border: none; background: none; transition: all 0.2s;
+        }
+        .nav-btn:hover { color: var(--text-secondary); background: rgba(255,255,255,0.03); }
+        .nav-btn.active { color: var(--cyan-400); background: rgba(6,182,212,0.1); }
+        .nav-select {
+            padding: 7px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
+            color: var(--text-muted); cursor: pointer; border: 1px solid var(--border);
+            background: var(--bg-card); appearance: none; -webkit-appearance: none;
+        }
+        .nav-spacer { flex: 1; }
+        .export-btn {
+            padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+            color: var(--teal-500); cursor: pointer; border: 1px solid rgba(20,184,166,0.3);
+            background: rgba(20,184,166,0.08); transition: all 0.2s;
+        }
+        .export-btn:hover { background: rgba(20,184,166,0.15); }
+
+        .main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+
+        .week-section { margin-bottom: 36px; }
+        .week-header {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
+        }
+        .week-badge {
+            background: linear-gradient(135deg, var(--cyan-500), var(--teal-500));
+            color: white; font-size: 11px; font-weight: 700; padding: 4px 10px;
+            border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .week-title { font-size: 15px; font-weight: 600; color: var(--text-secondary); }
+        .week-dates { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 14px; }
+
+        .post-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+            overflow: hidden; transition: all 0.25s; cursor: pointer;
+        }
+        .post-card:hover { border-color: var(--cyan-500); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(6,182,212,0.1); }
+        .post-top { display: flex; gap: 14px; padding: 14px; }
+        .post-thumb {
+            width: 96px; height: 96px; min-width: 96px; border-radius: 8px;
+            overflow: hidden; background: var(--bg-secondary); border: 1px solid var(--border);
+        }
+        .post-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .post-info { flex: 1; min-width: 0; }
+        .post-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .badge {
+            font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+            text-transform: uppercase; letter-spacing: 0.3px;
+        }
+        .badge-text { background: rgba(6,182,212,0.15); color: var(--cyan-400); }
+        .badge-poll { background: rgba(245,158,11,0.15); color: var(--amber-500); }
+        .post-date { font-size: 11px; color: var(--text-muted); }
+        .post-title {
+            font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.3;
+            margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        }
+        .post-pillar { font-size: 11px; color: var(--teal-500); font-weight: 500; }
+        .post-actions {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 14px; background: rgba(0,0,0,0.15); border-top: 1px solid var(--border);
+        }
+        .act-btn {
+            padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
+            border: 1px solid var(--border); background: var(--bg-secondary);
+            color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
+        }
+        .act-btn:hover { border-color: var(--cyan-500); color: var(--cyan-400); }
+        .act-btn.copied { border-color: var(--green-500); color: var(--green-500); background: rgba(34,197,94,0.1); }
+        .status-sel {
+            margin-left: auto; padding: 5px 10px; border-radius: 6px; font-size: 11px;
+            font-weight: 600; border: 1px solid var(--border); background: var(--bg-secondary);
+            color: var(--text-secondary); cursor: pointer; appearance: none; -webkit-appearance: none;
+        }
+        .status-draft { border-color: var(--text-muted); color: var(--text-muted); }
+        .status-ready { border-color: var(--amber-500); color: var(--amber-500); background: rgba(245,158,11,0.08); }
+        .status-scheduled { border-color: var(--cyan-500); color: var(--cyan-400); background: rgba(6,182,212,0.08); }
+        .status-posted { border-color: var(--green-500); color: var(--green-500); background: rgba(34,197,94,0.08); }
+
+        /* Modal */
+        .modal-bg {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+            z-index: 200; display: flex; align-items: center; justify-content: center; padding: 32px;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s;
+        }
+        .modal-bg.open { opacity: 1; pointer-events: all; }
+        .modal {
+            background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px;
+            max-width: 960px; width: 100%; max-height: 90vh; overflow-y: auto;
+            transform: translateY(16px); transition: transform 0.25s;
+        }
+        .modal-bg.open .modal { transform: translateY(0); }
+        .modal-head {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            padding: 20px 24px; border-bottom: 1px solid var(--border);
+        }
+        .modal-head-title { font-size: 16px; font-weight: 700; }
+        .modal-head-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .modal-close {
+            width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-muted); cursor: pointer; font-size: 16px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .modal-close:hover { border-color: var(--red-500); color: var(--red-500); }
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px; }
+        .modal-img { border-radius: 10px; overflow: hidden; background: var(--bg-primary); border: 1px solid var(--border); }
+        .modal-img img { width: 100%; height: auto; display: block; }
+        .modal-right { display: flex; flex-direction: column; gap: 14px; }
+        .section-label {
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px;
+        }
+        .post-copy-box {
+            font-size: 13px; line-height: 1.6; color: var(--text-secondary);
+            background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px;
+            padding: 14px; max-height: 300px; overflow-y: auto; white-space: pre-wrap;
+        }
+        .hashtags-text { font-size: 12px; color: var(--cyan-400); line-height: 1.6; }
+        .cta-text { font-size: 13px; color: var(--teal-500); font-style: italic; }
+        .modal-btns {
+            display: flex; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border);
+        }
+        .m-btn {
+            flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600;
+            border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-secondary); cursor: pointer; text-align: center; transition: all 0.2s;
+        }
+        .m-btn:hover { border-color: var(--cyan-500); color: var(--cyan-400); }
+        .m-btn.primary {
+            background: linear-gradient(135deg, var(--cyan-500), var(--teal-500));
+            border: none; color: white;
+        }
+        .m-btn.primary:hover { opacity: 0.9; }
+
+        /* Calendar */
+        .cal-grid {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;
+            background: var(--border); border-radius: 12px; overflow: hidden;
+        }
+        .cal-head {
+            background: var(--bg-card); padding: 10px; text-align: center;
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-muted);
+        }
+        .cal-cell { background: var(--bg-secondary); min-height: 100px; padding: 8px; }
+        .cal-cell.dim { opacity: 0.3; }
+        .cal-num { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+        .cal-dot {
+            padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 600;
+            margin-bottom: 2px; cursor: pointer; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; transition: all 0.2s;
+        }
+        .cal-dot:hover { transform: scale(1.03); }
+        .cal-dot.t-text { background: rgba(6,182,212,0.2); color: var(--cyan-400); }
+        .cal-dot.t-poll { background: rgba(245,158,11,0.2); color: var(--amber-500); }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; background: var(--bg-card);
+            border: 1px solid var(--green-500); color: var(--green-500);
+            padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
+            z-index: 300; transform: translateY(80px); opacity: 0; transition: all 0.3s;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        @media (max-width: 900px) {
+            .posts-grid { grid-template-columns: 1fr; }
+            .modal-body { grid-template-columns: 1fr; }
+            .main { padding: 16px; }
+            .header { padding: 12px 16px; }
+            .header-stats { display: none; }
+            .nav-bar { padding: 8px 16px; flex-wrap: wrap; }
+        }
+
+        /* Login Gate */
+        .login-gate {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--bg-primary);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column;
+        }
+        .login-gate.hidden { display: none; }
+        .login-box {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: 16px; padding: 40px; max-width: 400px; width: 90%;
+            text-align: center;
+        }
+        .login-logo {
+            font-size: 32px; font-weight: 800; margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--cyan-400), var(--teal-500));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .login-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+        .login-input {
+            width: 100%; padding: 12px 16px; border-radius: 10px; font-size: 14px;
+            border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-primary); font-family: 'Inter', sans-serif;
+            outline: none; transition: border-color 0.2s; margin-bottom: 14px;
+        }
+        .login-input:focus { border-color: var(--cyan-500); }
+        .login-input.error { border-color: var(--red-500); }
+        .login-btn {
+            width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600;
+            border: none; cursor: pointer; color: white;
+            background: linear-gradient(135deg, var(--cyan-500), var(--teal-500));
+            transition: opacity 0.2s;
+        }
+        .login-btn:hover { opacity: 0.9; }
+        .login-error { font-size: 12px; color: var(--red-500); margin-top: 10px; display: none; }
+        .login-error.show { display: block; }
+    </style>
+</head>
+<body>
+
+<div class="login-gate" id="loginGate">
+    <div class="login-box">
+        <div class="login-logo">bizmri</div>
+        <div class="login-subtitle">Content Scheduler — Team Access</div>
+        <input type="password" class="login-input" id="loginPassword" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="login-btn" onclick="doLogin()">Sign In</button>
+        <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+    </div>
+</div>
+
+<div id="appShell" style="display:none">
+<div class="header">
+    <div class="header-left">
+        <div class="logo">bizmri</div>
+        <div class="header-divider"></div>
+        <div class="header-title">Nicolas Content Scheduler</div>
+    </div>
+    <div class="header-stats" id="headerStats"></div>
+</div>
+
+<div class="nav-bar">
+    <button class="nav-btn active" id="btnGrid" onclick="setView('grid')">Week View</button>
+    <button class="nav-btn" id="btnCal" onclick="setView('calendar')">Calendar</button>
+    <div class="nav-spacer"></div>
+    <select class="nav-select" id="filterWeek" onchange="render()">
+        <option value="0">All Weeks</option>
+        <option value="1">Week 1</option><option value="2">Week 2</option>
+        <option value="3">Week 3</option><option value="4">Week 4</option>
+        <option value="5">Week 5</option><option value="6">Week 6</option>
+        <option value="7">Week 7</option>
+    </select>
+    <select class="nav-select" id="filterType" onchange="render()">
+        <option value="all">All Types</option>
+        <option value="Text">Text</option><option value="Poll">Poll</option>
+    </select>
+    <button class="export-btn" onclick="exportAll()">Export All Copy</button>
+</div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="modal-bg" id="modalBg" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()" id="modalContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+</div><!-- end appShell -->
+
+<script>
+// === AUTH ===
+const HASH = '1beeba5a7702e4003e3e85cc6a3afadccf222e43a4912634a66a76844c17585d';
+
+async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin() {
+    const pw = document.getElementById('loginPassword').value;
+    const hash = await sha256(pw);
+    if (hash === HASH) {
+        sessionStorage.setItem('bizmri-auth', 'ok');
+        unlockApp();
+    } else {
+        document.getElementById('loginPassword').classList.add('error');
+        document.getElementById('loginError').classList.add('show');
+        setTimeout(() => {
+            document.getElementById('loginPassword').classList.remove('error');
+            document.getElementById('loginError').classList.remove('show');
+        }, 3000);
+    }
+}
+
+function unlockApp() {
+    document.getElementById('loginGate').classList.add('hidden');
+    document.getElementById('appShell').style.display = '';
+    render();
+}
+
+// Auto-unlock if already authenticated this session
+if (sessionStorage.getItem('bizmri-auth') === 'ok') {
+    unlockApp();
+} else {
+    document.getElementById('loginPassword').focus();
+}
+</script>
+
+<script>
+// === DATA ===
+const POSTS=[{id:1,week:1,date:"Feb 10",day:"Tue",title:"Why Surveys Can't See What's Really Broken",type:"Text",pillar:"Product Innovation",hashtags:"#DataDriven #HR #Diagnostics #TeamDynamics #RealTimeAnalytics",cta:"What's the longest you've gone without truly understanding your organization's operational health?",image:"png/week1-nicolas-surveys.png",copy:"Annual survey: \"How are you feeling about your job?\"\n\nEmployee answers on day 47: \"Great!\"\n\nEmployee's resignation letter on day 184: \"I've decided to pursue other opportunities.\"\n\nThe gap between those two moments is the entire problem with how we think about organizational diagnostics.\n\nSurveys are *snapshots*. They measure sentiment at a single point in time. By the time you analyze the results and take action, the landscape has completely shifted.\n\nThink about the actual dynamics that matter:\n\n- Team communication breakdown (weeks, not months, to detect)\n- Manager-report relationship deterioration (days matter)\n- Cross-functional bottlenecks strangling productivity (real-time emergence)\n- Knowledge silos creating fragility (gradual, measurable patterns)\n\nThe companies that survive the next decade will be the ones with *continuous diagnostic systems*. Not annual check-ups. Continuous observation of organizational dynamics.\n\nThis requires a different architecture. Different data streams. Different thinking.\n\nThe future isn't better surveys. It's real-time signals that show you what's actually happening underneath the surface\u2014before it becomes a crisis.\n\nWhat metrics are you *actually* monitoring continuously vs. what are you just hoping stays stable?"},{id:2,week:1,date:"Feb 12",day:"Thu",title:"The Difference Between Instrumentation and Understanding",type:"Text",pillar:"Product Philosophy",hashtags:"#DataScience #Analytics #SignalProcessing #OrganizationalDynamics #HRTech",cta:"Reply: What's the gap between data you collect and insights you actually act on?",image:"png/week1-nicolas-instrumentation.png",copy:"Most HR platforms have solved a problem that wasn't the real problem.\n\nThey said: \"Companies need to *collect* more HR data.\"\n\nSo they built bigger questionnaires. More metrics. Shinier dashboards.\n\nBut nobody asked the harder question: \"What data actually *tells* you something useful?\"\n\nThere's a huge difference between *instrumentation* (we're measuring things) and *understanding* (we know what those measurements mean).\n\nConsider this scenario: A team's engagement score drops 2 points. Is that:\n- A temporary seasonal dip?\n- The early signal of a manager problem?\n- A structural issue with how the team is organized?\n- The precursor to mass resignations?\n\nYou can't tell from the metric alone. You need to understand the *causal structure* underneath.\n\nReal diagnostic systems:\n- Connect isolated signals into patterns\n- Weight signals by predictive power, not ease of measurement\n- Surface causality, not just correlation\n- Adapt as organizational dynamics shift\n\nIt's not about collecting more data. It's about extracting deeper understanding from the data that actually matters.\n\nWhat's one metric you track because it's easy to measure vs. one you track because it's predictive?"},{id:3,week:1,date:"Feb 14",day:"Sat",title:"How to Think About Organizational Signals Like a Systems Engineer",type:"Text",pillar:"Organizational Architecture",hashtags:"#SystemsThinking #OrganizationalDesign #Dynamics #Architecture #Leadership",cta:"Comment: What organizational problem do you suspect has roots in how your systems interact?",image:"png/week1-nicolas-systems-engineer.png",copy:"Systems engineers have a concept: \"You can't understand the system by looking at individual components.\"\n\nA car is not just an engine. The engine only works in relationship to the fuel system, ignition system, cooling system. Change one, and everything else ripples.\n\nOrganizations work the same way, but we keep trying to understand them by looking at individual signals.\n\n- \"Engagement is down\"\n- \"Turnover is up\"\n- \"Manager effectiveness is declining\"\n\nThese are component measurements. They tell you nothing without understanding the relationships between them.\n\nReal organizational diagnostics requires mapping:\n\n1. Causal chains: Does this signal cause that problem, or are they both symptoms of something else?\n2. Feedback loops: Where are we amplifying issues through our own systems?\n3. Fragility points: Where would a small change create large cascading effects?\n4. Adaptation: How does the system respond when we intervene?\n\nThis is systems thinking applied to people dynamics.\n\nWhat's one feedback loop in your organization you think is amplifying a problem?"},{id:4,week:2,date:"Feb 17",day:"Tue",title:"Why Your Org Chart Is Lying to You About How Work Actually Happens",type:"Text",pillar:"Operational Efficiency",hashtags:"#OrganizationalStructure #OperationalEfficiency #NetworkAnalysis #Leadership",cta:"Reply: Where does the biggest gap exist between your org chart and how work actually happens?",image:"png/week2-nicolas-org-chart.png",copy:"Your org chart shows:\n\nCEO > VP Engineering > Manager A > Engineer 1,2,3\n\nWhat it doesn't show:\n\nEngineering decisions actually go through Principal Engineer X first (who's not a manager). Critical infrastructure knowledge lives only with Engineer 2 (making them a single point of failure). Manager A has no authority over the actually important decisions.\n\nThis gap between *formal* organization and *actual* organization is where most operational failures hide.\n\nThe solution isn't changing the chart. It's *making the actual network visible*.\n\nWhen you understand how work *really* flows vs. how it's supposed to flow, you unlock massive efficiency.\n\nWhich decision or work process moves nothing like your org chart suggests it should?"},{id:5,week:2,date:"Feb 19",day:"Thu",title:"The Knowledge Silo Destroying Your Ability to Scale",type:"Text",pillar:"Scaling & Sustainability",hashtags:"#Knowledge #Scaling #OrganizationalResilience #Leadership #TechnicalDebt",cta:"Reply: Who's the person your company would struggle most to replace?",image:"png/week2-nicolas-knowledge-silos.png",copy:"There's a person at your company who knows:\n\n- How the main product system actually works (vs. how docs say it works)\n- Which vendors are critical, which are interchangeable\n- What's been tried before that didn't work (tribal knowledge)\n- How to navigate decision-making with specific stakeholders\n- Where technical debt is, why it exists, and why it matters\n\nWhen they leave, you lose millions of dollars in context.\n\nThis is knowledge concentration\u2014the silent killer of scaling organizations.\n\nThe companies that scale are the ones where progress doesn't depend on specific individuals.\n\nWhere would your company stall if one person left unexpectedly?"},{id:6,week:2,date:"Feb 21",day:"Sat",title:"The Cross-Functional Handoff Is Your Biggest Invisible Cost",type:"Text",pillar:"Process Efficiency",hashtags:"#ProcessOptimization #Efficiency #CrossFunctional #Operations #Lean",cta:"Reply: What's a handoff in your organization that consistently gets reworked?",image:"png/week2-nicolas-handoffs.png",copy:"Watch a piece of work move through your organization:\n\nProduct writes requirements > passes to Design > Design iterates > passes to Engineering > Engineering builds > passes to QA > QA tests > passes to Operations > Operations deploys.\n\nHow much context is lost at each step?\n\nMost of that waste is *not* about people doing bad work. It's about context loss in handoffs.\n\nMost organizations don't track any of this. So they don't know they're losing 30-50% of their productivity to handoff friction.\n\nThis is a systems problem, not a people problem.\n\nWhere do your most important handoffs lose the most context?"},{id:7,week:3,date:"Feb 24",day:"Tue",title:"Building Intelligence Into Organizational Systems",type:"Text",pillar:"AI & Intelligence",hashtags:"#AI #Analytics #OrganizationalIntelligence #Predictive #Innovation",cta:"Reply: What's one organizational pattern you'd want an intelligent system to recognize?",image:"png/week3-nicolas-intelligence.png",copy:"Traditional HR software asks you questions: \"How do you feel? What's your engagement?\"\n\nThe next generation won't ask. It will *know*.\n\nNot because of magic. Because it's built with intelligence about:\n\nPattern Recognition \u2022 Causal Understanding \u2022 Contextual Adaptation \u2022 Predictive Insight \u2022 Actionability\n\nThis is the difference between a tool (which you operate) and an intelligence (which operates *for* you).\n\nWhat organizational problem would become solvable if you had an intelligent system understanding it continuously?"},{id:8,week:3,date:"Feb 26",day:"Thu",title:"Structural Health: The Next Evolution of Organizational Design",type:"Text",pillar:"Organizational Architecture",hashtags:"#OrganizationalDesign #Structure #Optimization #Scaling #SystemsThinking",cta:"Reply: What structural problem would require perfect visibility to solve?",image:"png/week3-nicolas-structural-health.png",copy:"Org design today:\n\n\"We're 100 people, so we'll organize this way. We're 500, so we'll reorganize. We're 1000, so we'll reorganize again.\"\n\nEach reorganization is disruptive. Trust breaks. Context is lost. New silos form.\n\nStructural health means:\n\nClarity without fragmentation \u2022 Flow without friction \u2022 Resilience without redundancy \u2022 Adaptation without disruption\n\nMost companies still reorganize based on a CEO's intuition or a consultant's template.\n\nThe winners will be the ones with *evidence* about what structure actually works for their specific dynamics."},{id:9,week:3,date:"Feb 28",day:"Sat",title:"The Operating System for Organizational Intelligence",type:"Text",pillar:"Systems Design",hashtags:"#OrganizationalArchitecture #SystemsDesign #AI #Integration #Intelligence",cta:"Reply: What organizational insight would change everything if accessed continuously?",image:"png/week3-nicolas-org-os.png",copy:"Your computer has an operating system that:\n- Coordinates different hardware components\n- Allocates resources efficiently\n- Learns which processes matter most\n- Optimizes over time\n\nYour organization has... quarterly meetings and email?\n\nThe future is an organizational operating system that: Integrates signals \u2022 Reasons about causality \u2022 Coordinates action \u2022 Learns continuously \u2022 Optimizes outcomes\n\nCompanies that build this first in their category will have architectural advantage that's hard to disrupt.\n\nWhat's the most important thing your organization could learn about itself?"},{id:10,week:4,date:"Mar 3",day:"Tue",title:"Why Your Org Data Lives in Silos (And How Agentic Systems Fix It)",type:"Text",pillar:"Technology & Innovation",hashtags:"#AIArchitecture #DataIntegration #AgenticSystems #OrgTech",cta:"How many different systems does your org use to measure health?",image:"png/week4-nicolas-agentic-silos.png",copy:"Your org's data is everywhere. HRIS has hiring data. Slack has engagement signals. Your calendar system has collaboration patterns. Performance reviews sit in spreadsheets.\n\nNone of these systems talk to each other.\n\nAgentic systems solve this differently. Instead of moving data into a centralized warehouse, an agentic approach deploys autonomous agents across your data landscape.\n\nThese agents:\n- Continuously monitor patterns across multiple sources\n- Reason about connections humans would miss\n- Adapt their analysis as new signals emerge\n- Operate without manual triggering\n\nThis isn't just better ETL. It's a fundamentally different architecture.\n\nThe MRI metaphor holds: an MRI builds a multi-dimensional model in real-time. That requires a different technical foundation."},{id:11,week:4,date:"Mar 5",day:"Thu",title:"Poll: What's Your Biggest Obstacle to Organizational Visibility?",type:"Poll",pillar:"Market Research & Insights",hashtags:"#OrganizationalInsights #HRTech #DataDriven #PeopleLeadership",cta:"Vote in the poll and help us understand the real friction points.",image:"png/week4-nicolas-poll-obstacles.png",copy:"We talk to a lot of organizations trying to understand their internal health. They all run into friction.\n\nSometimes it's technical\u2014data integration nightmares, siloed systems.\nSometimes it's cultural\u2014people don't trust the metrics.\nSometimes it's practical\u2014no time to analyze the data.\nSometimes it's structural\u2014they lack the frameworks to know *what* to measure.\n\nIf you had to pick one\u2014the one that stops you most from understanding your organization's real health?\n\nYour answer matters. It tells us what we're actually solving for."},{id:12,week:4,date:"Mar 7",day:"Sat",title:"The Architecture Decision That Changes Everything: Agentic vs. Static",type:"Text",pillar:"ACA Architecture",hashtags:"#AIArchitecture #AgenticAI #SaaS #EngineeringLeadership #FutureOfSoftware",cta:"Debate in comments: can legacy SaaS go agentic?",image:"png/week4-nicolas-agentic-vs-static.png",copy:"Every SaaS product in HR tech was built the same way: database, API, dashboard, user clicks buttons.\n\nWe threw that playbook away.\n\nWe didn't build a tool for humans to operate. We built an agent that operates on behalf of humans.\n\nIn an agentic architecture, the system continuously: monitors signals, identifies patterns, surfaces recommendations proactively, and takes action within defined boundaries.\n\nYou don't operate it. You direct it.\n\nAdding AI to a static architecture is like adding a turbo to a bicycle. The underlying structure wasn't built for it.\n\nThe companies that will win were built for this from day one.\n\nWhat's your take \u2014 can legacy SaaS successfully go agentic?"},{id:13,week:5,date:"Mar 10",day:"Tue",title:"How Predictive Models Work (And Why Static Models Fail at Org Health)",type:"Text",pillar:"Technology & Innovation",hashtags:"#PredictiveAnalytics #AI #DataScience #OrganizationalTech",cta:"Which organizational changes happen fastest in your company?",image:"png/week5-nicolas-predictive-models.png",copy:"Most predictive models in HR break down after six months.\n\nThey're trained on historical data. Then the organization changes. And the model becomes noise.\n\nDynamic models\u2014ones that continuously update\u2014are different.\n\nDay 1-30: Collect signals. Build a baseline.\nDay 31-60: Model updates. Learns your specific org's patterns.\nDay 61+: Model now *predicts* anomalies against your org's current dynamic patterns.\n\nStatic models fail because they assume stable states. Organizations have dynamic equilibrium. Catch when the equilibrium shifts\u2014that's when early intervention works."},{id:14,week:5,date:"Mar 12",day:"Thu",title:"Poll: When You Need Real-Time Org Visibility, What Problem Are You Trying to Solve?",type:"Poll",pillar:"Market Research & Insights",hashtags:"#OrganizationalDevelopment #PeopleLeadership #BusinessChallenges #HRInsights",cta:"Vote now. Help us understand which business problems matter most.",image:"png/week5-nicolas-poll-visibility.png",copy:"There are different reasons to want real-time organizational visibility.\n\nSome are bleeding talent. Some are shipping slow. Some see hidden risk. Some are trying to scale.\n\nIf you had to pick the *one* that would move your business most in the next 90 days\u2014which is it?\n\nYour answer tells us what we should be optimizing for."},{id:15,week:5,date:"Mar 14",day:"Sat",title:"Why Correlation Isn't Enough: Building Causal Models for People Data",type:"Text",pillar:"AI & Data Science",hashtags:"#DataScience #CausalInference #PeopleAnalytics #MachineLearning",cta:"Share your most misleading people data correlation",image:"png/week5-nicolas-causal-models.png",copy:"Every people analytics dashboard shows you correlations. Almost none show you causation.\n\n\"Teams with low engagement scores have higher turnover.\" Great. But which caused which?\n\nThe techniques\u2014structural causal models, do-calculus, counterfactual reasoning\u2014have existed in academia for years. What's new is enough continuous organizational data to apply them at scale.\n\nWhen you move from \"engagement is correlated with retention\" to \"this specific management behavior causes a 23% increase in voluntary attrition within 90 days,\" you move from interesting to actionable.\n\nThat's the shift from analytics to diagnostics."},{id:16,week:6,date:"Mar 17",day:"Tue",title:"Why Continuous Diagnostics Beat Annual Snapshots: The Technical Why",type:"Text",pillar:"Technical Vision",hashtags:"#AIArchitecture #SystemsThinking #OrganizationalTech #Diagnostics",cta:"What metric do you measure about your org that actually matters?",image:"png/week6-nicolas-continuous-diagnostics.png",copy:"Annual engagement surveys are, from a systems perspective, fundamentally wrong.\n\nHuman organizations are dynamic systems. An annual snapshot is like measuring a living body's health once per year.\n\nFrom first principles: Any system you measure infrequently becomes optimized for the measurement event, not for reality.\n\nContinuous diagnostics solve this because they're embedded in the system.\n\nThe tech requirement? Agents that synthesize signals in real-time. Not dashboards you check monthly. Streams running 24/7.\n\nThis is what organizational health actually requires: continuous, integrated, predictive systems. Everything else is theater."},{id:17,week:6,date:"Mar 19",day:"Thu",title:"Poll: How Often Does Your Company Actually Measure Organizational Health?",type:"Poll",pillar:"Market Research",hashtags:"#OrganizationalHealth #PulseCheck #HRTech #DataDriven",cta:"Vote above and add your constraint in the comments.",image:"png/week6-nicolas-poll-frequency.png",copy:"Simple question\u2014how often does your organization actually measure organizational health?\n\nA) Once a year (annual survey)\nB) Quarterly (pulse check)\nC) Monthly (getting serious)\nD) Weekly/Continuous (real-time visibility)\nE) We don't really measure (honest answer)\n\nFrom what we see, the gap between best practice and reality is massive.\n\nComment with your choice and add one sentence: What's holding you back?"},{id:18,week:6,date:"Mar 21",day:"Sat",title:"The ACA Difference: Why Batch Processing Dashboards Fail for Org Health",type:"Text",pillar:"Technical Architecture",hashtags:"#AI #Agents #ACA #OrganizationalTech #Architecture",cta:"Are you still running organizational health as a dashboard problem?",image:"png/week6-nicolas-aca-difference.png",copy:"Dashboards are batch. Data loads overnight. You see yesterday's picture.\n\nDashboards require action from you. You have to log in, find the anomaly, interpret it.\n\nACA (Agentic Custom Apps) are different.\n\nAgents run continuously. They monitor 24/7. They take autonomous action. They learn and compound in value.\n\nThis isn't a UI difference. This is a fundamental architectural difference.\n\nDashboards are inspection. Agents are prevention."},{id:19,week:7,date:"Mar 24",day:"Tue",title:"The Future of Org Health: From Dashboards to Autonomous Agents",type:"Text",pillar:"Future Vision",hashtags:"#AIFuture #OrganizationalTech #FutureOfWork #Prediction #Innovation",cta:"Where do you think org health technology is heading?",image:"png/week7-nicolas-future-vision.png",copy:"Today (2025): Dashboards and annual surveys dominate. Early innings.\n\nYear 2-3: Continuous monitoring becomes table stakes. Market bifurcates.\n\nYear 4-5: Autonomous agents become the default. Org optimized 24/7.\n\nYear 5+: Predictive organizational architecture. Hiring, team formation, project assignment\u2014all informed by continuous diagnostics.\n\nA single bad hire or missed departure in a 300-person company costs $800K-2M.\n\nThe companies starting now will have 5-year competitive advantages."},{id:20,week:7,date:"Mar 26",day:"Thu",title:"First Principles: What Org Health Becomes When You Remove Time Delays",type:"Text",pillar:"Systems Thinking",hashtags:"#SystemsThinking #FirstPrinciples #Feedback #Organization #AI",cta:"What's the biggest time delay in your organization's decision-making?",image:"png/week7-nicolas-first-principles.png",copy:"Every organizational system has a feedback loop. The quality of your decisions is directly proportional to the speed of your feedback loop.\n\nAnnual survey: 12-month feedback loop.\nReal-time diagnostics: Feedback loop in hours.\nZero-latency (the endpoint): Continuous.\n\nWhat becomes possible at zero latency?\n\n1. Proactive > reactive\n2. Context > averages\n3. Compound learning\n4. Organizational adaptation in real-time\n\nYour organization becomes a learning system instead of a static structure.\n\nThat's the vision. Everything else is getting there."},{id:21,week:7,date:"Mar 28",day:"Sat",title:"Poll: What Will Drive Organizational Health Adoption in Your Company?",type:"Poll",pillar:"Market Psychology",hashtags:"#OrganizationalHealth #Adoption #MarketResearch #Leadership #Change",cta:"Vote above and drop your blocker in the comments.",image:"png/week7-nicolas-poll-adoption.png",copy:"What would actually make your company move to continuous organizational health diagnostics?\n\nA) CEO/Board mandate\nB) Competitive threat\nC) Retention crisis\nD) Budget availability\nE) Proven ROI case study\nF) Technology breakthrough\nG) We're already doing it\nH) None of the above\n\nMy hypothesis: Most companies need a retention crisis to move. The visionary companies move on competitive threat. The mature ones move on CFO ROI case.\n\nWhat's holding you back from moving faster?"}];
+
+const WEEK_THEMES = {1:"The Wake-Up Call",2:"The Broken System",3:"The New Paradigm",4:"The Intelligence Layer",5:"The Business Case",6:"The Practitioner's Guide",7:"The Vision"};
+const WEEK_DATES = {1:"Feb 10 \u2013 Feb 14",2:"Feb 17 \u2013 Feb 21",3:"Feb 24 \u2013 Feb 28",4:"Mar 3 \u2013 Mar 7",5:"Mar 10 \u2013 Mar 14",6:"Mar 17 \u2013 Mar 21",7:"Mar 24 \u2013 Mar 28"};
+
+const DATE_MAP = {"Feb 10":"2026-02-10","Feb 12":"2026-02-12","Feb 14":"2026-02-14","Feb 17":"2026-02-17","Feb 19":"2026-02-19","Feb 21":"2026-02-21","Feb 24":"2026-02-24","Feb 26":"2026-02-26","Feb 28":"2026-02-28","Mar 3":"2026-03-03","Mar 5":"2026-03-05","Mar 7":"2026-03-07","Mar 10":"2026-03-10","Mar 12":"2026-03-12","Mar 14":"2026-03-14","Mar 17":"2026-03-17","Mar 19":"2026-03-19","Mar 21":"2026-03-21","Mar 24":"2026-03-24","Mar 26":"2026-03-26","Mar 28":"2026-03-28"};
+
+// State
+let currentView = 'grid';
+let statuses = {};
+POSTS.forEach(p => statuses[p.id] = 'draft');
+
+// Try loading from localStorage
+try {
+    const saved = JSON.parse(localStorage.getItem('bizmri-statuses'));
+    if (saved) statuses = saved;
+} catch(e) {}
+
+function saveStatuses() {
+    try { localStorage.setItem('bizmri-statuses', JSON.stringify(statuses)); } catch(e) {}
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function setView(v) {
+    currentView = v;
+    document.getElementById('btnGrid').classList.toggle('active', v === 'grid');
+    document.getElementById('btnCal').classList.toggle('active', v === 'calendar');
+    render();
+}
+
+function updateStats() {
+    const counts = {draft:0,ready:0,scheduled:0,posted:0};
+    Object.values(statuses).forEach(s => counts[s]++);
+    document.getElementById('headerStats').innerHTML = `
+        <div><div class="stat-value">${POSTS.length}</div><div class="stat-label">Total</div></div>
+        <div><div class="stat-value" style="color:var(--green-500)">${counts.posted}</div><div class="stat-label">Posted</div></div>
+        <div><div class="stat-value" style="color:var(--cyan-400)">${counts.scheduled}</div><div class="stat-label">Scheduled</div></div>
+        <div><div class="stat-value" style="color:var(--amber-500)">${counts.ready}</div><div class="stat-label">Ready</div></div>
+        <div><div class="stat-value" style="color:var(--text-muted)">${counts.draft}</div><div class="stat-label">Draft</div></div>
+    `;
+}
+
+function getFiltered() {
+    const week = parseInt(document.getElementById('filterWeek').value);
+    const type = document.getElementById('filterType').value;
+    return POSTS.filter(p => {
+        if (week > 0 && p.week !== week) return false;
+        if (type !== 'all' && p.type !== type) return false;
+        return true;
+    });
+}
+
+function copyText(id, e) {
+    e.stopPropagation();
+    const p = POSTS.find(x => x.id === id);
+    navigator.clipboard.writeText(p.copy + "\n\n" + p.hashtags).then(() => {
+        const btn = e.target;
+        btn.textContent = '\u2713 Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '\uD83D\uDCCB Copy Text'; btn.classList.remove('copied'); }, 2000);
+    });
+}
+
+function downloadImg(id, e) {
+    e.stopPropagation();
+    const p = POSTS.find(x => x.id === id);
+    const a = document.createElement('a');
+    a.href = p.image; a.download = p.image.split('/').pop(); a.click();
+}
+
+function changeStatus(id, val, e) {
+    e.stopPropagation();
+    statuses[id] = val;
+    saveStatuses();
+    updateStats();
+    const sel = e.target;
+    sel.className = 'status-sel status-' + val;
+    showToast('Status updated to "' + val + '"');
+}
+
+function openModal(id) {
+    const p = POSTS.find(x => x.id === id);
+    const m = document.getElementById('modalContent');
+    m.innerHTML = `
+        <div class="modal-head">
+            <div>
+                <div class="modal-head-title">${esc(p.title)}</div>
+                <div class="modal-head-sub">Week ${p.week} \u2022 ${p.date} (${p.day}) \u2022 ${p.type} \u2022 ${esc(p.pillar)}</div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">\u2715</button>
+        </div>
+        <div class="modal-body">
+            <div>
+                <div class="modal-img"><img src="${p.image}" alt="${esc(p.title)}"></div>
+            </div>
+            <div class="modal-right">
+                <div><div class="section-label">Post Copy</div><div class="post-copy-box">${esc(p.copy)}</div></div>
+                <div><div class="section-label">Hashtags</div><div class="hashtags-text">${esc(p.hashtags)}</div></div>
+                <div><div class="section-label">Call to Action</div><div class="cta-text">${esc(p.cta)}</div></div>
+                <div class="modal-btns">
+                    <button class="m-btn" onclick="window.open('${p.image.replace('png/','').replace('.png','.html')}','_blank')">Open HTML</button>
+                    <button class="m-btn" onclick="modalDownload(${p.id})">Download PNG</button>
+                    <button class="m-btn primary" id="modalCopyBtn" onclick="modalCopy(${p.id})">Copy Full Post</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('modalBg').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
+
+function modalCopy(id) {
+    const p = POSTS.find(x => x.id === id);
+    navigator.clipboard.writeText(p.copy + "\n\n" + p.hashtags + "\n\n" + p.cta).then(() => {
+        const btn = document.getElementById('modalCopyBtn');
+        btn.textContent = '\u2713 Copied!';
+        setTimeout(() => { btn.textContent = 'Copy Full Post'; }, 2000);
+    });
+}
+
+function modalDownload(id) {
+    const p = POSTS.find(x => x.id === id);
+    const a = document.createElement('a');
+    a.href = p.image; a.download = p.image.split('/').pop(); a.click();
+}
+
+function exportAll() {
+    const all = POSTS.map((p,i) =>
+        `--- POST ${i+1}: ${p.date} ---\n${p.title}\n\n${p.copy}\n\n${p.hashtags}\n\n${p.cta}`
+    ).join('\n\n\n');
+    navigator.clipboard.writeText(all).then(() => showToast('All 21 posts copied to clipboard!'));
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>'); }
+
+function renderGrid(posts) {
+    const grouped = {};
+    posts.forEach(p => { if (!grouped[p.week]) grouped[p.week] = []; grouped[p.week].push(p); });
+
+    let html = '';
+    Object.keys(grouped).sort((a,b) => a-b).forEach(week => {
+        html += `<div class="week-section">
+            <div class="week-header">
+                <span class="week-badge">Week ${week}</span>
+                <span class="week-title">${WEEK_THEMES[week]}</span>
+                <span class="week-dates">${WEEK_DATES[week]}</span>
+            </div>
+            <div class="posts-grid">`;
+
+        grouped[week].forEach(p => {
+            const st = statuses[p.id];
+            const bc = p.type === 'Poll' ? 'badge-poll' : 'badge-text';
+            html += `<div class="post-card" onclick="openModal(${p.id})">
+                <div class="post-top">
+                    <div class="post-thumb"><img src="${p.image}" alt="" loading="lazy"></div>
+                    <div class="post-info">
+                        <div class="post-meta">
+                            <span class="badge ${bc}">${p.type}</span>
+                            <span class="post-date">${p.date} (${p.day})</span>
+                        </div>
+                        <div class="post-title">${esc(p.title)}</div>
+                        <div class="post-pillar">${esc(p.pillar)}</div>
+                    </div>
+                </div>
+                <div class="post-actions">
+                    <button class="act-btn" onclick="copyText(${p.id},event)">\uD83D\uDCCB Copy Text</button>
+                    <button class="act-btn" onclick="downloadImg(${p.id},event)">\u2B07 Image</button>
+                    <select class="status-sel status-${st}" onclick="event.stopPropagation()" onchange="changeStatus(${p.id},this.value,event)">
+                        <option value="draft"${st==='draft'?' selected':''}>Draft</option>
+                        <option value="ready"${st==='ready'?' selected':''}>Ready</option>
+                        <option value="scheduled"${st==='scheduled'?' selected':''}>Scheduled</option>
+                        <option value="posted"${st==='posted'?' selected':''}>Posted</option>
+                    </select>
+                </div>
+            </div>`;
+        });
+        html += '</div></div>';
+    });
+    return html;
+}
+
+function renderCalendar() {
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const postsByDate = {};
+    POSTS.forEach(p => { const iso = DATE_MAP[p.date]; if (iso) postsByDate[iso] = p; });
+
+    const months = [{name:"February 2026",y:2026,m:1},{name:"March 2026",y:2026,m:2}];
+    let html = '';
+
+    months.forEach(mo => {
+        const firstDay = new Date(mo.y, mo.m, 1).getDay();
+        const daysInMonth = new Date(mo.y, mo.m + 1, 0).getDate();
+
+        html += `<div style="margin-bottom:32px"><h3 style="font-size:16px;font-weight:700;margin-bottom:12px;color:var(--text-secondary)">${mo.name}</h3>`;
+        html += '<div class="cal-grid">';
+        days.forEach(d => { html += `<div class="cal-head">${d}</div>`; });
+
+        for (let i = 0; i < firstDay; i++) html += '<div class="cal-cell dim"></div>';
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            const iso = `${mo.y}-${String(mo.m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const post = postsByDate[iso];
+            html += `<div class="cal-cell"><div class="cal-num">${d}</div>`;
+            if (post) {
+                const cls = post.type === 'Poll' ? 't-poll' : 't-text';
+                html += `<div class="cal-dot ${cls}" onclick="openModal(${post.id})" title="${esc(post.title)}">${esc(post.title.substring(0,22))}...</div>`;
+            }
+            html += '</div>';
+        }
+        html += '</div></div>';
+    });
+    return html;
+}
+
+function render() {
+    const filtered = getFiltered();
+    const main = document.getElementById('mainContent');
+    if (currentView === 'grid') {
+        main.innerHTML = renderGrid(filtered);
+    } else {
+        main.innerHTML = renderCalendar();
+    }
+    updateStats();
+}
+
+// Keyboard shortcut
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Init
+render();
+</script>
+</body>
+</html>
