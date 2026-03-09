@@ -15,6 +15,7 @@ export const Navbar = () => {
               <a href="#scan" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">The Scan</a>
               <a href="#platform" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">Platform</a>
               <a href="#reporting" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">Reports</a>
+              <a href="/blog" className="text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">Blog</a>
               <a href="#waitlist" className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors font-bold text-cyan-400">Join Waitlist</a>
             </div>
           </div>
