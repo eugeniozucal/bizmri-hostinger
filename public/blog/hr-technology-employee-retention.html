@@ -17,13 +17,17 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.75; }
-    .nav { position:sticky; top:0; z-index:100; background:rgba(13,17,23,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 0; }
-    .nav-inner { max-width:1000px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:1px; text-decoration:none; }
-    .logo span { color:var(--cyan); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
+    .nav { position:sticky; top:0; z-index:100; background:rgba(30,41,59,.65); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:32px; width:32px; }
+    .logo span { font-size:1.25rem; font-weight:800; color:var(--white); letter-spacing:2px; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { color:rgba(203,213,225,1); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--cyan); }
+    .nav-links .blog-link { color:var(--cyan); font-weight:600; }
+    .nav-cta { padding:8px 20px; background:transparent; border:1px solid rgba(0,229,255,.4); color:var(--cyan); font-size:0.82rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all .2s; letter-spacing:0.5px; }
+    .nav-cta:hover { background:rgba(0,229,255,.1); border-color:var(--cyan); }
     .container { max-width:800px; margin:0 auto; padding:48px 24px 80px; }
     .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:24px; }
     .breadcrumb a { color:var(--cyan); text-decoration:none; }
@@ -104,13 +108,17 @@
 </head>
 <body>
 <nav class="nav"><div class="nav-inner">
-  <a href="https://bizmri.ai" class="logo">BIZM<span>RI</span></a>
+  <a href="https://bizmri.ai" class="logo">
+    <img src="https://bizmri.ai/bizmri-logo.png" alt="BIZMRI Logo">
+    <span>BIZMRI</span>
+  </a>
   <div class="nav-links">
-    <a href="https://bizmri.ai/#diagnosis">Diagnosis</a>
+    <a href="https://bizmri.ai/#precision">Diagnosis</a>
     <a href="https://bizmri.ai/#scan">The Scan</a>
     <a href="https://bizmri.ai/#platform">Platform</a>
-    <a href="https://bizmri.ai/#reports">Reports</a>
-    <a href="https://bizmri.ai/#waitlist">Join Waitlist</a>
+    <a href="https://bizmri.ai/#reporting">Reports</a>
+    <a href="index.html" class="blog-link">Blog</a>
+    <a href="https://bizmri.ai/#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </div></nav>
 <div class="container">
@@ -122,7 +130,7 @@
   <div class="author-avatar">B</div>
   <div class="author-info"><strong>BIZMRI Research</strong><br>March 2026 &middot; 8 min read</div>
 </div>
-<div class="hero-img"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80" alt="HR Technology for Employee Retention" loading="lazy"></div>
+<div class="hero-img"><img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&q=80" alt="HR Technology for Employee Retention" loading="lazy"></div>
 <div class="toc"><div class="toc-title">In This Article</div><a href="#the-retention-technology-landscape">The Retention Technology Landscape</a><a href="#tools-that-move-the-needle">Tools That Move the Needle</a><a href="#measuring-technology-roi">Measuring Technology ROI</a></div>
 <h2 id="the-retention-technology-landscape">The Retention Technology Landscape</h2><p>The HR technology market is booming — but not all tools are equally effective at reducing turnover. Some address symptoms (exit interviews, offboarding automation) while others tackle root causes (real-time engagement monitoring, predictive analytics, AI-powered organizational health diagnostics).</p><p>The technologies with the highest retention impact share a common trait: they detect problems early enough to fix them. The earlier you identify a disengagement pattern, the more options you have to intervene.</p>
 <h2 id="tools-that-move-the-needle">Tools That Move the Needle</h2><div class="card"><div class="card-title">AI Organizational Health Diagnostics (Highest Impact)</div><p>Continuous, deep visibility into workforce health. Detects burnout, disengagement, and cultural issues 60-90 days before they manifest as resignations. ROI: reducing turnover by 5+ percentage points annually.</p></div><div class="card"><div class="card-title">Manager Coaching Platforms (High Impact)</div><p>Since the #1 reason employees leave is their manager, tools that improve management quality have outsized retention effects. AI-powered coaching based on team health data multiplies this impact.</p></div><div class="card"><div class="card-title">Career Development Platforms (Medium Impact)</div><p>Lack of growth is the #2 driver of voluntary turnover. Internal mobility platforms and learning management systems help, but only if they're connected to actual career progression.</p></div><div class="card"><div class="card-title">Recognition & Rewards (Medium Impact)</div><p>Peer recognition platforms improve belonging and appreciation. Most effective when recognition is frequent, specific, and tied to company values.</p></div>
@@ -140,21 +148,21 @@
 <div class="recommended">
   <h3 class="rec-heading">Recommended Reading</h3>
   <div class="rec-grid"><a href="what-is-organizational-health.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="What Is Organizational Health?" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="What Is Organizational Health?" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-pillar" style="font-size:0.65rem;margin-bottom:6px;">Pillar Guide</span>
     <div class="rec-title">What Is Organizational Health?</div>
     <div class="rec-desc">The complete guide to measuring and improving the hidden vital signs of your company.</div>
   </div>
 </a><a href="ai-employee-interview-tool.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80" alt="The AI Employee Interview Tool" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?w=800&q=80" alt="The AI Employee Interview Tool" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-feature" style="font-size:0.65rem;margin-bottom:6px;">Product</span>
     <div class="rec-title">The AI Employee Interview Tool</div>
     <div class="rec-desc">How AI agents conduct empathetic conversations with your entire workforce at scale.</div>
   </div>
 </a><a href="employee-attrition-prediction-ai.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&q=80" alt="Employee Attrition Prediction with AI" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80" alt="Employee Attrition Prediction with AI" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-guide" style="font-size:0.65rem;margin-bottom:6px;">Guide</span>
     <div class="rec-title">Employee Attrition Prediction with AI</div>

@@ -17,13 +17,17 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.75; }
-    .nav { position:sticky; top:0; z-index:100; background:rgba(13,17,23,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 0; }
-    .nav-inner { max-width:1000px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:1px; text-decoration:none; }
-    .logo span { color:var(--cyan); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
+    .nav { position:sticky; top:0; z-index:100; background:rgba(30,41,59,.65); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:32px; width:32px; }
+    .logo span { font-size:1.25rem; font-weight:800; color:var(--white); letter-spacing:2px; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { color:rgba(203,213,225,1); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--cyan); }
+    .nav-links .blog-link { color:var(--cyan); font-weight:600; }
+    .nav-cta { padding:8px 20px; background:transparent; border:1px solid rgba(0,229,255,.4); color:var(--cyan); font-size:0.82rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all .2s; letter-spacing:0.5px; }
+    .nav-cta:hover { background:rgba(0,229,255,.1); border-color:var(--cyan); }
     .container { max-width:800px; margin:0 auto; padding:48px 24px 80px; }
     .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:24px; }
     .breadcrumb a { color:var(--cyan); text-decoration:none; }
@@ -104,13 +108,17 @@
 </head>
 <body>
 <nav class="nav"><div class="nav-inner">
-  <a href="https://bizmri.ai" class="logo">BIZM<span>RI</span></a>
+  <a href="https://bizmri.ai" class="logo">
+    <img src="https://bizmri.ai/bizmri-logo.png" alt="BIZMRI Logo">
+    <span>BIZMRI</span>
+  </a>
   <div class="nav-links">
-    <a href="https://bizmri.ai/#diagnosis">Diagnosis</a>
+    <a href="https://bizmri.ai/#precision">Diagnosis</a>
     <a href="https://bizmri.ai/#scan">The Scan</a>
     <a href="https://bizmri.ai/#platform">Platform</a>
-    <a href="https://bizmri.ai/#reports">Reports</a>
-    <a href="https://bizmri.ai/#waitlist">Join Waitlist</a>
+    <a href="https://bizmri.ai/#reporting">Reports</a>
+    <a href="index.html" class="blog-link">Blog</a>
+    <a href="https://bizmri.ai/#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </div></nav>
 <div class="container">
@@ -122,7 +130,7 @@
   <div class="author-avatar">B</div>
   <div class="author-info"><strong>BIZMRI Research</strong><br>March 2026 &middot; 8 min read</div>
 </div>
-<div class="hero-img"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Real-Time Engagement Analytics" loading="lazy"></div>
+<div class="hero-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Real-Time Engagement Analytics" loading="lazy"></div>
 <div class="toc"><div class="toc-title">In This Article</div><a href="#why-real-time-matters">Why Real-Time Matters</a><a href="#key-metrics-to-track">Key Metrics to Track</a><a href="#technology-architecture">Technology Architecture</a><a href="#dashboard-design-principles">Dashboard Design Principles</a><a href="#from-data-to-action">From Data to Action</a></div>
 <h2 id="why-real-time-matters">Why Real-Time Matters</h2><p>Imagine running a business where your financial data was 6 weeks old. You'd never make a confident decision. Yet this is exactly how most organizations manage their most valuable asset — their people.</p><p>Real-time engagement analytics close this gap by providing continuous, always-current visibility into workforce sentiment, team dynamics, and organizational health indicators.</p><div class="highlight-box"><strong>The business case:</strong> Organizations that monitor engagement in real time detect attrition risk an average of 90 days earlier than those relying on periodic surveys — creating a 3-month intervention window that can save millions in replacement costs.</div>
 <h2 id="key-metrics-to-track">Key Metrics to Track</h2><div class="card"><div class="card-title">Engagement Index</div><p>A composite score combining purpose, autonomy, mastery, and belonging signals. Updated continuously as new data flows in from AI conversations.</p></div><div class="card"><div class="card-title">Burnout Risk Score</div><p>Tracks workload sustainability, stress language patterns, PTO utilization, and energy indicators. Triggers alerts when thresholds are breached.</p></div><div class="card"><div class="card-title">Leadership Trust Score</div><p>Measures employee confidence in direct managers and executive leadership. A leading indicator of team performance and retention.</p></div><div class="card"><div class="card-title">Communication Flow Index</div><p>Identifies information bottlenecks, silos, and breakdowns in cross-functional collaboration. Correlates strongly with execution speed.</p></div><div class="card"><div class="card-title">Flight Risk Indicator</div><p>Predictive metric combining engagement decline, sentiment shifts, and behavioral signals to flag employees at risk of departure.</p></div>
@@ -142,7 +150,7 @@
 <div class="recommended">
   <h3 class="rec-heading">Recommended Reading</h3>
   <div class="rec-grid"><a href="department-health-score.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Department Health Scores" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?w=800&q=80" alt="Department Health Scores" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-feature" style="font-size:0.65rem;margin-bottom:6px;">Feature</span>
     <div class="rec-title">Department Health Scores</div>
@@ -156,7 +164,7 @@
     <div class="rec-desc">How to translate engagement improvements into dollar figures CFOs care about.</div>
   </div>
 </a><a href="what-is-organizational-health.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="What Is Organizational Health?" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="What Is Organizational Health?" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-pillar" style="font-size:0.65rem;margin-bottom:6px;">Pillar Guide</span>
     <div class="rec-title">What Is Organizational Health?</div>

@@ -17,13 +17,17 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.75; }
-    .nav { position:sticky; top:0; z-index:100; background:rgba(13,17,23,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 0; }
-    .nav-inner { max-width:1000px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:1px; text-decoration:none; }
-    .logo span { color:var(--cyan); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
+    .nav { position:sticky; top:0; z-index:100; background:rgba(30,41,59,.65); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:32px; width:32px; }
+    .logo span { font-size:1.25rem; font-weight:800; color:var(--white); letter-spacing:2px; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { color:rgba(203,213,225,1); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--cyan); }
+    .nav-links .blog-link { color:var(--cyan); font-weight:600; }
+    .nav-cta { padding:8px 20px; background:transparent; border:1px solid rgba(0,229,255,.4); color:var(--cyan); font-size:0.82rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all .2s; letter-spacing:0.5px; }
+    .nav-cta:hover { background:rgba(0,229,255,.1); border-color:var(--cyan); }
     .container { max-width:800px; margin:0 auto; padding:48px 24px 80px; }
     .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:24px; }
     .breadcrumb a { color:var(--cyan); text-decoration:none; }
@@ -104,13 +108,17 @@
 </head>
 <body>
 <nav class="nav"><div class="nav-inner">
-  <a href="https://bizmri.ai" class="logo">BIZM<span>RI</span></a>
+  <a href="https://bizmri.ai" class="logo">
+    <img src="https://bizmri.ai/bizmri-logo.png" alt="BIZMRI Logo">
+    <span>BIZMRI</span>
+  </a>
   <div class="nav-links">
-    <a href="https://bizmri.ai/#diagnosis">Diagnosis</a>
+    <a href="https://bizmri.ai/#precision">Diagnosis</a>
     <a href="https://bizmri.ai/#scan">The Scan</a>
     <a href="https://bizmri.ai/#platform">Platform</a>
-    <a href="https://bizmri.ai/#reports">Reports</a>
-    <a href="https://bizmri.ai/#waitlist">Join Waitlist</a>
+    <a href="https://bizmri.ai/#reporting">Reports</a>
+    <a href="index.html" class="blog-link">Blog</a>
+    <a href="https://bizmri.ai/#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </div></nav>
 <div class="container">
@@ -141,21 +149,21 @@
 <div class="recommended">
   <h3 class="rec-heading">Recommended Reading</h3>
   <div class="rec-grid"><a href="alternative-to-employee-surveys.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=800&q=80" alt="The Best Alternative to Employee Surveys" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80" alt="The Best Alternative to Employee Surveys" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-blog" style="font-size:0.65rem;margin-bottom:6px;">Thought Leadership</span>
     <div class="rec-title">The Best Alternative to Employee Surveys</div>
     <div class="rec-desc">Why surveys are broken and what forward-thinking companies are doing instead.</div>
   </div>
 </a><a href="what-is-organizational-health.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="What Is Organizational Health?" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="What Is Organizational Health?" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-pillar" style="font-size:0.65rem;margin-bottom:6px;">Pillar Guide</span>
     <div class="rec-title">What Is Organizational Health?</div>
     <div class="rec-desc">The complete guide to measuring and improving the hidden vital signs of your company.</div>
   </div>
 </a><a href="workforce-diagnostics-ai.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Workforce Diagnostics AI" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Workforce Diagnostics AI" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-pillar" style="font-size:0.65rem;margin-bottom:6px;">Pillar Guide</span>
     <div class="rec-title">Workforce Diagnostics AI</div>

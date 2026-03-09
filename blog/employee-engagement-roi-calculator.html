@@ -17,13 +17,17 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.75; }
-    .nav { position:sticky; top:0; z-index:100; background:rgba(13,17,23,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 0; }
-    .nav-inner { max-width:1000px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:1px; text-decoration:none; }
-    .logo span { color:var(--cyan); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
+    .nav { position:sticky; top:0; z-index:100; background:rgba(30,41,59,.65); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:32px; width:32px; }
+    .logo span { font-size:1.25rem; font-weight:800; color:var(--white); letter-spacing:2px; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { color:rgba(203,213,225,1); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--cyan); }
+    .nav-links .blog-link { color:var(--cyan); font-weight:600; }
+    .nav-cta { padding:8px 20px; background:transparent; border:1px solid rgba(0,229,255,.4); color:var(--cyan); font-size:0.82rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all .2s; letter-spacing:0.5px; }
+    .nav-cta:hover { background:rgba(0,229,255,.1); border-color:var(--cyan); }
     .container { max-width:800px; margin:0 auto; padding:48px 24px 80px; }
     .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:24px; }
     .breadcrumb a { color:var(--cyan); text-decoration:none; }
@@ -104,13 +108,17 @@
 </head>
 <body>
 <nav class="nav"><div class="nav-inner">
-  <a href="https://bizmri.ai" class="logo">BIZM<span>RI</span></a>
+  <a href="https://bizmri.ai" class="logo">
+    <img src="https://bizmri.ai/bizmri-logo.png" alt="BIZMRI Logo">
+    <span>BIZMRI</span>
+  </a>
   <div class="nav-links">
-    <a href="https://bizmri.ai/#diagnosis">Diagnosis</a>
+    <a href="https://bizmri.ai/#precision">Diagnosis</a>
     <a href="https://bizmri.ai/#scan">The Scan</a>
     <a href="https://bizmri.ai/#platform">Platform</a>
-    <a href="https://bizmri.ai/#reports">Reports</a>
-    <a href="https://bizmri.ai/#waitlist">Join Waitlist</a>
+    <a href="https://bizmri.ai/#reporting">Reports</a>
+    <a href="index.html" class="blog-link">Blog</a>
+    <a href="https://bizmri.ai/#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </div></nav>
 <div class="container">
@@ -142,21 +150,21 @@
 <div class="recommended">
   <h3 class="rec-heading">Recommended Reading</h3>
   <div class="rec-grid"><a href="ai-employee-interview-tool.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80" alt="The AI Employee Interview Tool" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?w=800&q=80" alt="The AI Employee Interview Tool" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-feature" style="font-size:0.65rem;margin-bottom:6px;">Product</span>
     <div class="rec-title">The AI Employee Interview Tool</div>
     <div class="rec-desc">How AI agents conduct empathetic conversations with your entire workforce at scale.</div>
   </div>
 </a><a href="hr-technology-employee-retention.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80" alt="HR Technology for Employee Retention" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&q=80" alt="HR Technology for Employee Retention" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-guide" style="font-size:0.65rem;margin-bottom:6px;">Guide</span>
     <div class="rec-title">HR Technology for Employee Retention</div>
     <div class="rec-desc">Not all HR tech improves retention. Here's what actually works.</div>
   </div>
 </a><a href="employee-attrition-prediction-ai.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&q=80" alt="Employee Attrition Prediction with AI" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&q=80" alt="Employee Attrition Prediction with AI" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-guide" style="font-size:0.65rem;margin-bottom:6px;">Guide</span>
     <div class="rec-title">Employee Attrition Prediction with AI</div>

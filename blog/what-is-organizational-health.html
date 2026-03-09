@@ -17,13 +17,17 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.75; }
-    .nav { position:sticky; top:0; z-index:100; background:rgba(13,17,23,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 0; }
-    .nav-inner { max-width:1000px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:1px; text-decoration:none; }
-    .logo span { color:var(--cyan); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
+    .nav { position:sticky; top:0; z-index:100; background:rgba(30,41,59,.65); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:32px; width:32px; }
+    .logo span { font-size:1.25rem; font-weight:800; color:var(--white); letter-spacing:2px; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { color:rgba(203,213,225,1); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--cyan); }
+    .nav-links .blog-link { color:var(--cyan); font-weight:600; }
+    .nav-cta { padding:8px 20px; background:transparent; border:1px solid rgba(0,229,255,.4); color:var(--cyan); font-size:0.82rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all .2s; letter-spacing:0.5px; }
+    .nav-cta:hover { background:rgba(0,229,255,.1); border-color:var(--cyan); }
     .container { max-width:800px; margin:0 auto; padding:48px 24px 80px; }
     .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:24px; }
     .breadcrumb a { color:var(--cyan); text-decoration:none; }
@@ -104,13 +108,17 @@
 </head>
 <body>
 <nav class="nav"><div class="nav-inner">
-  <a href="https://bizmri.ai" class="logo">BIZM<span>RI</span></a>
+  <a href="https://bizmri.ai" class="logo">
+    <img src="https://bizmri.ai/bizmri-logo.png" alt="BIZMRI Logo">
+    <span>BIZMRI</span>
+  </a>
   <div class="nav-links">
-    <a href="https://bizmri.ai/#diagnosis">Diagnosis</a>
+    <a href="https://bizmri.ai/#precision">Diagnosis</a>
     <a href="https://bizmri.ai/#scan">The Scan</a>
     <a href="https://bizmri.ai/#platform">Platform</a>
-    <a href="https://bizmri.ai/#reports">Reports</a>
-    <a href="https://bizmri.ai/#waitlist">Join Waitlist</a>
+    <a href="https://bizmri.ai/#reporting">Reports</a>
+    <a href="index.html" class="blog-link">Blog</a>
+    <a href="https://bizmri.ai/#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </div></nav>
 <div class="container">
@@ -122,7 +130,7 @@
   <div class="author-avatar">B</div>
   <div class="author-info"><strong>BIZMRI Research</strong><br>March 2026 &middot; 8 min read</div>
 </div>
-<div class="hero-img"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="What Is Organizational Health?" loading="lazy"></div>
+<div class="hero-img"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="What Is Organizational Health?" loading="lazy"></div>
 <div class="toc"><div class="toc-title">In This Article</div><a href="#definition-of-organizational-health">Definition of Organizational Health</a><a href="#why-it-matters-more-than-ever">Why It Matters More Than Ever</a><a href="#the-7-dimensions-of-organizational-health">The 7 Dimensions of Organizational Health</a><a href="#how-to-measure-organizational-health">How to Measure Organizational Health</a><a href="#traditional-methods-vs.-ai-diagnostics">Traditional Methods vs. AI Diagnostics</a><a href="#building-an-organizational-health-strategy">Building an Organizational Health Strategy</a></div>
 <h2 id="definition-of-organizational-health">Definition of Organizational Health</h2><p>Organizational health refers to an organization's ability to align around a common vision, execute against that vision effectively, and renew itself through innovation and creative thinking. Unlike performance metrics that show <em>what</em> happened, organizational health reveals <em>why</em> it happened and <em>what will happen next</em>.</p><p>Think of it like a medical checkup for your company. Revenue is a symptom. Organizational health is the underlying condition that determines whether that revenue is sustainable or a house of cards waiting to collapse.</p><div class="highlight-box"><strong>Key insight:</strong> McKinsey research found that companies in the top quartile of organizational health deliver 3x the shareholder returns of those in the bottom quartile.</div>
 <h2 id="why-it-matters-more-than-ever">Why It Matters More Than Ever</h2><p>In an era of hybrid work, AI disruption, and talent scarcity, the organizations that thrive aren't just the ones with the best products — they're the ones with the healthiest internal ecosystems.</p><div class="stat-grid"><div class="stat"><div class="num">87%</div><div class="label">of exit interviews cite issues detectable 3+ months prior</div></div><div class="stat"><div class="num">3x</div><div class="label">shareholder returns for top-quartile healthy orgs</div></div><div class="stat"><div class="num">$1T+</div><div class="label">annual cost of voluntary turnover in the US alone</div></div></div><p>The problem is that most organizations have no reliable way to measure their health in real time. They rely on annual surveys with 12% response rates, anecdotal feedback from managers, and exit interviews that arrive too late to matter.</p>
@@ -143,21 +151,21 @@
 <div class="recommended">
   <h3 class="rec-heading">Recommended Reading</h3>
   <div class="rec-grid"><a href="real-time-employee-engagement-analytics.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="Real-Time Engagement Analytics" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Real-Time Engagement Analytics" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-guide" style="font-size:0.65rem;margin-bottom:6px;">Guide</span>
     <div class="rec-title">Real-Time Engagement Analytics</div>
     <div class="rec-desc">Monitor workforce health as it happens with continuous AI-powered insights.</div>
   </div>
 </a><a href="alternative-to-employee-surveys.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=800&q=80" alt="The Best Alternative to Employee Surveys" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80" alt="The Best Alternative to Employee Surveys" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-blog" style="font-size:0.65rem;margin-bottom:6px;">Thought Leadership</span>
     <div class="rec-title">The Best Alternative to Employee Surveys</div>
     <div class="rec-desc">Why surveys are broken and what forward-thinking companies are doing instead.</div>
   </div>
 </a><a href="ai-employee-interview-tool.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80" alt="The AI Employee Interview Tool" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1596524430615-b46475ddff6e?w=800&q=80" alt="The AI Employee Interview Tool" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-feature" style="font-size:0.65rem;margin-bottom:6px;">Product</span>
     <div class="rec-title">The AI Employee Interview Tool</div>

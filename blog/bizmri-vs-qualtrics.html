@@ -17,13 +17,17 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.75; }
-    .nav { position:sticky; top:0; z-index:100; background:rgba(13,17,23,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 0; }
-    .nav-inner { max-width:1000px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:1px; text-decoration:none; }
-    .logo span { color:var(--cyan); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
+    .nav { position:sticky; top:0; z-index:100; background:rgba(30,41,59,.65); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:32px; width:32px; }
+    .logo span { font-size:1.25rem; font-weight:800; color:var(--white); letter-spacing:2px; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { color:rgba(203,213,225,1); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--cyan); }
+    .nav-links .blog-link { color:var(--cyan); font-weight:600; }
+    .nav-cta { padding:8px 20px; background:transparent; border:1px solid rgba(0,229,255,.4); color:var(--cyan); font-size:0.82rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all .2s; letter-spacing:0.5px; }
+    .nav-cta:hover { background:rgba(0,229,255,.1); border-color:var(--cyan); }
     .container { max-width:800px; margin:0 auto; padding:48px 24px 80px; }
     .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:24px; }
     .breadcrumb a { color:var(--cyan); text-decoration:none; }
@@ -104,13 +108,17 @@
 </head>
 <body>
 <nav class="nav"><div class="nav-inner">
-  <a href="https://bizmri.ai" class="logo">BIZM<span>RI</span></a>
+  <a href="https://bizmri.ai" class="logo">
+    <img src="https://bizmri.ai/bizmri-logo.png" alt="BIZMRI Logo">
+    <span>BIZMRI</span>
+  </a>
   <div class="nav-links">
-    <a href="https://bizmri.ai/#diagnosis">Diagnosis</a>
+    <a href="https://bizmri.ai/#precision">Diagnosis</a>
     <a href="https://bizmri.ai/#scan">The Scan</a>
     <a href="https://bizmri.ai/#platform">Platform</a>
-    <a href="https://bizmri.ai/#reports">Reports</a>
-    <a href="https://bizmri.ai/#waitlist">Join Waitlist</a>
+    <a href="https://bizmri.ai/#reporting">Reports</a>
+    <a href="index.html" class="blog-link">Blog</a>
+    <a href="https://bizmri.ai/#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </div></nav>
 <div class="container">
@@ -122,7 +130,7 @@
   <div class="author-avatar">B</div>
   <div class="author-info"><strong>BIZMRI Research</strong><br>March 2026 &middot; 8 min read</div>
 </div>
-<div class="hero-img"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="BIZMRI vs Qualtrics" loading="lazy"></div>
+<div class="hero-img"><img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80" alt="BIZMRI vs Qualtrics" loading="lazy"></div>
 <div class="toc"><div class="toc-title">In This Article</div><a href="#overview">Overview</a><a href="#feature-by-feature-comparison">Feature-by-Feature Comparison</a><a href="#when-to-choose-qualtrics-employeexm">When to Choose Qualtrics EmployeeXM</a><a href="#when-to-choose-bizmri">When to Choose BIZMRI</a></div>
 <h2 id="overview">Overview</h2><p>Choosing between BIZMRI and Qualtrics EmployeeXM comes down to what problem you're solving. Both platforms help organizations understand their people better, but they approach the challenge from fundamentally different angles.</p><p><strong>Qualtrics EmployeeXM</strong> (qualtrics.com) is an enterprise experience management suite backed by SAP with deep survey methodology. <strong>BIZMRI</strong> (bizmri.ai) is a focused AI organizational health platform with empathetic agent interviews.</p>
 <h2 id="feature-by-feature-comparison">Feature-by-Feature Comparison</h2><table><tr><th>Dimension</th><th>Qualtrics EmployeeXM</th><th>BIZMRI</th></tr><tr><td><strong>Approach</strong></td><td>Enterprise XM suite (survey-centric)</td><td style="color:var(--cyan);">Purpose-built AI health diagnostic</td></tr><tr><td><strong>Complexity</strong></td><td>Requires XM expertise to configure</td><td style="color:var(--cyan);">Self-configuring AI agents</td></tr><tr><td><strong>Target Market</strong></td><td>Large enterprise (10K+ employees)</td><td style="color:var(--cyan);">Mid-market to enterprise (400+)</td></tr><tr><td><strong>Implementation</strong></td><td>Weeks to months</td><td style="color:var(--cyan);">Days</td></tr><tr><td><strong>Data Collection</strong></td><td>Forms, surveys, multi-channel</td><td style="color:var(--cyan);">Empathetic AI conversations</td></tr><tr><td><strong>Analytics</strong></td><td>Powerful but requires analysts</td><td style="color:var(--cyan);">Auto-generated executive reports</td></tr><tr><td><strong>Integration Breadth</strong></td><td>Extensive (SAP ecosystem)</td><td style="color:var(--cyan);">API-first, lightweight</td></tr><tr><td><strong>Cost</strong></td><td>Enterprise pricing (high)</td><td style="color:var(--cyan);">Accessible per-assessment pricing</td></tr><tr><td><strong>Unique Strength</strong></td><td>Benchmarking database</td><td style="color:var(--cyan);">Empathetic AI with real-time health scores</td></tr></table>
@@ -141,21 +149,21 @@
 <div class="recommended">
   <h3 class="rec-heading">Recommended Reading</h3>
   <div class="rec-grid"><a href="bizmri-vs-culture-amp.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="BIZMRI vs Culture Amp" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=800&q=80" alt="BIZMRI vs Culture Amp" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-vs" style="font-size:0.65rem;margin-bottom:6px;">Comparison</span>
     <div class="rec-title">BIZMRI vs Culture Amp</div>
     <div class="rec-desc">An honest comparison of AI diagnostics vs. survey-based engagement.</div>
   </div>
 </a><a href="bizmri-vs-lattice.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="BIZMRI vs Lattice" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80" alt="BIZMRI vs Lattice" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-vs" style="font-size:0.65rem;margin-bottom:6px;">Comparison</span>
     <div class="rec-title">BIZMRI vs Lattice</div>
     <div class="rec-desc">Organizational health AI vs. people management platform.</div>
   </div>
 </a><a href="pulse-surveys-vs-ai-agents.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="Pulse Surveys vs AI Agents" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80" alt="Pulse Surveys vs AI Agents" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-blog" style="font-size:0.65rem;margin-bottom:6px;">Comparison</span>
     <div class="rec-title">Pulse Surveys vs AI Agents</div>

@@ -17,13 +17,17 @@
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.75; }
-    .nav { position:sticky; top:0; z-index:100; background:rgba(13,17,23,.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 0; }
-    .nav-inner { max-width:1000px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; }
-    .logo { font-size:1.3rem; font-weight:800; color:var(--white); letter-spacing:1px; text-decoration:none; }
-    .logo span { color:var(--cyan); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
+    .nav { position:sticky; top:0; z-index:100; background:rgba(30,41,59,.65); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,.05); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo img { height:32px; width:32px; }
+    .logo span { font-size:1.25rem; font-weight:800; color:var(--white); letter-spacing:2px; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { color:rgba(203,213,225,1); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color .2s; }
     .nav-links a:hover { color:var(--cyan); }
+    .nav-links .blog-link { color:var(--cyan); font-weight:600; }
+    .nav-cta { padding:8px 20px; background:transparent; border:1px solid rgba(0,229,255,.4); color:var(--cyan); font-size:0.82rem; font-weight:600; border-radius:6px; text-decoration:none; transition:all .2s; letter-spacing:0.5px; }
+    .nav-cta:hover { background:rgba(0,229,255,.1); border-color:var(--cyan); }
     .container { max-width:800px; margin:0 auto; padding:48px 24px 80px; }
     .breadcrumb { font-size:0.8rem; color:var(--muted); margin-bottom:24px; }
     .breadcrumb a { color:var(--cyan); text-decoration:none; }
@@ -104,13 +108,17 @@
 </head>
 <body>
 <nav class="nav"><div class="nav-inner">
-  <a href="https://bizmri.ai" class="logo">BIZM<span>RI</span></a>
+  <a href="https://bizmri.ai" class="logo">
+    <img src="https://bizmri.ai/bizmri-logo.png" alt="BIZMRI Logo">
+    <span>BIZMRI</span>
+  </a>
   <div class="nav-links">
-    <a href="https://bizmri.ai/#diagnosis">Diagnosis</a>
+    <a href="https://bizmri.ai/#precision">Diagnosis</a>
     <a href="https://bizmri.ai/#scan">The Scan</a>
     <a href="https://bizmri.ai/#platform">Platform</a>
-    <a href="https://bizmri.ai/#reports">Reports</a>
-    <a href="https://bizmri.ai/#waitlist">Join Waitlist</a>
+    <a href="https://bizmri.ai/#reporting">Reports</a>
+    <a href="index.html" class="blog-link">Blog</a>
+    <a href="https://bizmri.ai/#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </div></nav>
 <div class="container">
@@ -122,7 +130,7 @@
   <div class="author-avatar">B</div>
   <div class="author-info"><strong>BIZMRI Research</strong><br>March 2026 &middot; 8 min read</div>
 </div>
-<div class="hero-img"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="BIZMRI vs Lattice" loading="lazy"></div>
+<div class="hero-img"><img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80" alt="BIZMRI vs Lattice" loading="lazy"></div>
 <div class="toc"><div class="toc-title">In This Article</div><a href="#overview">Overview</a><a href="#feature-by-feature-comparison">Feature-by-Feature Comparison</a><a href="#when-to-choose-lattice">When to Choose Lattice</a><a href="#when-to-choose-bizmri">When to Choose BIZMRI</a></div>
 <h2 id="overview">Overview</h2><p>Choosing between BIZMRI and Lattice comes down to what problem you're solving. Both platforms help organizations understand their people better, but they approach the challenge from fundamentally different angles.</p><p><strong>Lattice</strong> (lattice.com) is an people management platform combining performance reviews, goals, engagement, and compensation. <strong>BIZMRI</strong> (bizmri.ai) is a AI-powered organizational health diagnostic platform.</p>
 <h2 id="feature-by-feature-comparison">Feature-by-Feature Comparison</h2><table><tr><th>Dimension</th><th>Lattice</th><th>BIZMRI</th></tr><tr><td><strong>Approach</strong></td><td>People management suite</td><td style="color:var(--cyan);">AI organizational health scanner</td></tr><tr><td><strong>Core Strength</strong></td><td>Performance management + OKRs</td><td style="color:var(--cyan);">Workforce diagnostic intelligence</td></tr><tr><td><strong>Engagement Method</strong></td><td>Pulse surveys + eNPS</td><td style="color:var(--cyan);">AI agent interviews</td></tr><tr><td><strong>Analytics Depth</strong></td><td>Survey analysis + AI summaries</td><td style="color:var(--cyan);">Deep sentiment + predictive alerts</td></tr><tr><td><strong>Best For</strong></td><td>Ongoing performance management</td><td style="color:var(--cyan);">Diagnosing organizational health issues</td></tr><tr><td><strong>Implementation</strong></td><td>Moderate (multi-module setup)</td><td style="color:var(--cyan);">Fast (single-purpose deployment)</td></tr><tr><td><strong>Manager Tools</strong></td><td>1:1 agendas, review templates</td><td style="color:var(--cyan);">Team health scores, risk alerts</td></tr><tr><td><strong>Pricing</strong></td><td>Per-employee/month subscription</td><td style="color:var(--cyan);">Per-diagnostic assessment</td></tr><tr><td><strong>Content Library</strong></td><td>Extensive blog + resources</td><td style="color:var(--cyan);">Emerging (you're reading it!)</td></tr></table>
@@ -141,21 +149,21 @@
 <div class="recommended">
   <h3 class="rec-heading">Recommended Reading</h3>
   <div class="rec-grid"><a href="bizmri-vs-perceptyx.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="BIZMRI vs Perceptyx" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=800&q=80" alt="BIZMRI vs Perceptyx" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-vs" style="font-size:0.65rem;margin-bottom:6px;">Comparison</span>
     <div class="rec-title">BIZMRI vs Perceptyx</div>
     <div class="rec-desc">Empathetic AI agents vs. enterprise listening platform.</div>
   </div>
 </a><a href="bizmri-vs-qualtrics.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="BIZMRI vs Qualtrics" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80" alt="BIZMRI vs Qualtrics" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-vs" style="font-size:0.65rem;margin-bottom:6px;">Comparison</span>
     <div class="rec-title">BIZMRI vs Qualtrics</div>
     <div class="rec-desc">Purpose-built health diagnostic vs. enterprise experience management suite.</div>
   </div>
 </a><a href="pulse-surveys-vs-ai-agents.html" class="rec-card">
-  <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80" alt="Pulse Surveys vs AI Agents" class="rec-img">
+  <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80" alt="Pulse Surveys vs AI Agents" class="rec-img">
   <div class="rec-body">
     <span class="hero-tag tag-blog" style="font-size:0.65rem;margin-bottom:6px;">Comparison</span>
     <div class="rec-title">Pulse Surveys vs AI Agents</div>
