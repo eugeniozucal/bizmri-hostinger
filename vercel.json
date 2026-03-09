@@ -5,6 +5,8 @@
   "rewrites": [
     { "source": "/scheduler", "destination": "/scheduler/index.html" },
     { "source": "/scheduler/(.*)", "destination": "/scheduler/$1" },
-    { "source": "/((?!scheduler).*)", "destination": "/index.html" }
+    { "source": "/blog", "destination": "/blog/index.html" },
+    { "source": "/blog/(.*)", "destination": "/blog/$1" },
+    { "source": "/((?!scheduler|blog).*)", "destination": "/index.html" }
   ]
 }
