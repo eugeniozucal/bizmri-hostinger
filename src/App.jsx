@@ -1,33 +1,32 @@
-import React from 'react'
-import { Navbar } from './components/Navbar'
-import { Hero } from './components/Hero'
-import { Problem } from './components/Problem'
-import { PrecisionDiagnostics } from './components/PrecisionDiagnostics'
-import { Solution } from './components/Solution'
-import { DiagnosticScan } from './components/DiagnosticScan'
-import { Comparison } from './components/Comparison'
-import { PlatformShowcase } from './components/PlatformShowcase'
-import { Reporting } from './components/Reporting'
-import { SocialProof } from './components/SocialProof'
-import { Footer } from './components/Footer'
+import React, { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { RouteSeo } from './seo/RouteSeo'
+import { SiteLayout } from './components/SiteLayout'
+import { Home } from './pages/Home'
+import { TermsPage } from './pages/TermsPage'
+import { PrivacyPage } from './pages/PrivacyPage'
+import { ContactPage } from './pages/ContactPage'
+import { WaitlistModal } from './components/WaitlistModal'
 
 function App() {
+  const [modalOpen, setModalOpen] = useState(false)
+
+  const openModal = () => setModalOpen(true)
+  const closeModal = () => setModalOpen(false)
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50 selection:bg-cyan-500/30 selection:text-cyan-100 scroll-smooth">
-      <Navbar />
-      <main>
-        <Hero />
-        <Problem />
-        <PrecisionDiagnostics />
-        <Solution />
-        <DiagnosticScan />
-        <Comparison />
-        <PlatformShowcase />
-        <Reporting />
-        <SocialProof />
-      </main>
-      <Footer />
-    </div>
+    <>
+      <RouteSeo />
+      <Routes>
+        <Route path="/" element={<SiteLayout onOpenModal={openModal} />}>
+          <Route index element={<Home onOpenModal={openModal} />} />
+          <Route path="terms" element={<TermsPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="contact" element={<ContactPage />} />
+        </Route>
+      </Routes>
+      <WaitlistModal isOpen={modalOpen} onClose={closeModal} />
+    </>
   )
 }
 

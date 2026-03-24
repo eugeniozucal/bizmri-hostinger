@@ -1,60 +1,67 @@
-import React from 'react'
-import { ChevronRight, ScanLine } from 'lucide-react'
-import { Button } from './ui/Button'
-import { Badge } from './ui/Badge'
+import React, { useEffect, useState } from 'react'
+import { CONTACT_HREF } from '../contactHref'
 
-export const Hero = () => {
+export function Hook() {
+  const [visible, setVisible] = useState(false)
+  const [subVisible, setSubVisible] = useState(false)
+  const [ctaVisible, setCtaVisible] = useState(false)
+  const [contactVisible, setContactVisible] = useState(false)
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setVisible(true), 200)
+    const t2 = setTimeout(() => setSubVisible(true), 900)
+    const t3 = setTimeout(() => setCtaVisible(true), 1600)
+    const t4 = setTimeout(() => setContactVisible(true), 1950)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
+      clearTimeout(t4)
+    }
+  }, [])
+
+  const fadeUp = (show) =>
+    `transition-all duration-700 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`
+
+  const body =
+    'text-base sm:text-lg md:text-xl leading-[1.5] sm:leading-[1.55] font-light tracking-normal max-w-2xl mx-auto'
+
+  const contactBtnClass =
+    'inline-flex items-center justify-center self-center px-8 py-3.5 rounded-md text-sm font-medium text-white bg-indigo-600 border border-indigo-600 shadow-[0_4px_14px_rgba(79,70,229,0.35)] hover:bg-indigo-700 hover:border-indigo-700 hover:shadow-[0_6px_22px_rgba(79,70,229,0.45)] active:scale-[0.98] transition-all duration-300'
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-      {/* Background Visuals */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-slate-900/80 mix-blend-multiply z-10"></div>
-        <img
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
-          alt="Modern Corporate Architecture"
-          className="w-full h-full object-cover opacity-40 scale-105 animate-[pulse_10s_ease-in-out_infinite]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-slate-900 z-10"></div>
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 z-10"></div>
-      </div>
+    <section className="relative flex min-h-[100dvh] flex-col items-center">
+      {/* pt clears fixed nav (h-14); inner flex-1 + justify-center avoids tucking content under the bar */}
+      <div
+        className={`flex w-full max-w-3xl flex-1 flex-col justify-center px-4 pb-14 pt-[calc(3.5rem+1.25rem+env(safe-area-inset-top,0px))] sm:mx-auto sm:px-6 sm:pb-20 ${fadeUp(visible)}`}
+      >
+        <div className="flex flex-col gap-3 sm:gap-3.5">
+          <div className="flex flex-col gap-4 sm:gap-5">
+            <h1 className="text-[1.65rem] font-bold leading-[1.15] tracking-tight text-black max-w-2xl mx-auto sm:text-3xl md:text-4xl lg:text-5xl sm:leading-[1.12]">
+              Did you know 80% of your business processes are undocumented?
+            </h1>
 
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mb-6 flex justify-center">
-          <Badge variant="cyan" className="animate-pulse shadow-[0_0_15px_rgba(34,211,238,0.3)]">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>
-            SYSTEM STATUS: OPERATIONAL
-          </Badge>
-        </div>
+            <p className={`${body} text-black/50 ${fadeUp(subVisible)}`}>
+              They exist only as tribal knowledge inside your employees&apos; heads.
+            </p>
+          </div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
-          STOP GUESSING. <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-cyan-200 to-teal-300">
-            START SCANNING.
-          </span>
-        </h1>
+          <p className={`${body} text-black/80 ${fadeUp(ctaVisible)}`}>
+            With <span className="font-semibold text-black">bizMRI</span>, gather the information, gain full visibility, and take back the power to make better decisions.
+          </p>
 
-        <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-slate-300 leading-relaxed font-light">
-          Manual assessments are obsolete. BIZMRI deploys empathetic AI agents to interview your entire workforce simultaneously, delivering a real-time radiography of your organizational health.
-        </p>
-
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a href="#waitlist">
-            <Button variant="primary" className="group h-14 px-8 text-base">
-              <ScanLine className="w-5 h-5 mr-2" />
-              START DIAGNOSTIC
-              <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+          <a
+            href={CONTACT_HREF}
+            className={`${contactBtnClass} mt-2 sm:mt-3 ${fadeUp(contactVisible)}`}
+          >
+            Contact us
           </a>
         </div>
-
-        <p className="mt-6 text-xs font-mono text-cyan-500/60 tracking-[0.2em] uppercase">
-          TRUSTED BY GLOBAL ENTERPRISES &gt; 400 EMPLOYEES
-        </p>
       </div>
 
-      {/* Decorative Scan Lines — framing the content */}
-      <div className="absolute top-[18%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent z-10"></div>
-      <div className="absolute bottom-[10%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent z-10"></div>
+      <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 scroll-indicator sm:bottom-10">
+        <div className="w-[1px] h-10 bg-gradient-to-b from-black/40 to-transparent mx-auto sm:h-12"></div>
+      </div>
     </section>
   )
 }

@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bizMRI.ai - Operational Intelligence Platform</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    /* Ultra-minimal scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #ffffff;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+
+    /* Selection styling */
+    ::selection {
+      background-color: rgba(0, 0, 0, 0.15);
+      color: #000000;
+    }
+
+    /* Scroll indicator pulse */
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(6px); }
+    }
+
+    .scroll-indicator {
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* Glow button effect */
+    .btn-glow {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: radial-gradient(circle at center, rgba(0,0,0,0.08) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: inherit;
+      z-index: -1;
+    }
+
+    .btn-glow:hover::before {
+      opacity: 1;
+    }
+
+    .btn-glow:hover {
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.12), 0 0 40px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* Inverted glow for dark sections */
+    .btn-glow-invert {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-glow-invert:hover {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 40px rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* Modal backdrop blur */
+    .modal-backdrop {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Floating label for form inputs */
+    .floating-input {
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: #fff;
+      padding: 12px 0 8px;
+      font-size: 15px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .floating-input:focus {
+      border-bottom-color: #fff;
+    }
+
+    .floating-input::placeholder {
+      color: rgba(255,255,255,0.4);
+      transition: color 0.3s ease;
+    }
+
+    .floating-input:focus::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* Custom select in dark mode */
+    .dark-select {
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: #fff;
+      padding: 12px 0 8px;
+      font-size: 15px;
+      width: 100%;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .dark-select option {
+      background: #111;
+      color: #fff;
+    }
+
+    /* Fade in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    /* Smooth transitions */
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 300ms;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-white text-black">
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent">
+    <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <a href="#" class="text-lg font-semibold tracking-tight text-black select-none">
+        bizMRI<span class="text-black/30 font-light">.ai</span>
+      </a>
+
+      <div id="nav-menu" class="hidden md:flex items-center gap-8">
+        <a href="#solution" class="text-[13px] text-black/50 hover:text-black transition-colors duration-200">
+          Solution
+        </a>
+        <a href="#technology" class="text-[13px] text-black/50 hover:text-black transition-colors duration-200">
+          Technology
+        </a>
+        <a href="#about" class="text-[13px] text-black/50 hover:text-black transition-colors duration-200">
+          About
+        </a>
+        <button
+          class="text-[13px] text-black border border-black/15 px-4 py-1.5 rounded-md hover:border-black/40 hover:shadow-[0_0_15px_rgba(0,0,0,0.06)] transition-all duration-300 open-modal"
+        >
+          Beta Portal
+        </button>
+      </div>
+
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden text-black/50 hover:text-black transition-colors"
+        aria-label="Toggle navigation"
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 5h14M2 9h14M2 13h14" id="menu-icon"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-black/5 px-6 py-5 space-y-4 animate-fade-in">
+      <a href="#solution" class="block text-sm text-black/60 hover:text-black">Solution</a>
+      <a href="#technology" class="block text-sm text-black/60 hover:text-black">Technology</a>
+      <a href="#about" class="block text-sm text-black/60 hover:text-black">About</a>
+      <button class="text-sm text-black border border-black/15 px-4 py-1.5 rounded-md open-modal">
+        Beta Portal
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO / HOOK SECTION -->
+  <section class="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight text-black transition-all duration-700 opacity-0 translate-y-4">
+        Did you know 80% of your business processes are undocumented?
+      </h1>
+
+      <p id="hero-subtitle" class="mt-8 text-lg sm:text-xl md:text-2xl text-black/50 font-light leading-relaxed max-w-2xl mx-auto transition-all duration-700 opacity-0 translate-y-4">
+        They exist only as tribal knowledge inside your employees' heads.
+      </p>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 scroll-indicator">
+      <div class="w-[1px] h-12 bg-gradient-to-b from-black/40 to-transparent mx-auto"></div>
+    </div>
+  </section>
+
+  <!-- AI CURE / SOLUTION SECTION -->
+  <section id="solution" class="py-28 md:py-36 px-6 bg-white">
+    <div class="max-w-6xl mx-auto transition-all duration-1000 opacity-0 translate-y-8 section-fade">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- Left: Text -->
+        <div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-black leading-[1.1] mb-6">
+            bizMRI Digitizes Your Invisible Knowledge.
+          </h2>
+          <p class="text-lg text-black/50 leading-relaxed mb-10 max-w-xl">
+            By capturing your organization's invisible knowledge, our AI agents uncover deep operational pains and untapped opportunities for improvement. Get a clear, prioritized roadmap so you know exactly where to attack first-driving massive productivity gains and giving you the head start needed to become your industry's next success story.
+          </p>
+          <button class="inline-flex items-center px-8 py-4 rounded-md text-sm font-medium text-white bg-indigo-600 border border-indigo-600 shadow-[0_4px_14px_rgba(79,70,229,0.35)] hover:bg-indigo-700 hover:border-indigo-700 hover:shadow-[0_6px_22px_rgba(79,70,229,0.45)] active:scale-[0.98] transition-all duration-300 open-modal">
+            Join the Waitlist
+          </button>
+          <p class="mt-4 text-xs text-black/30 italic">
+            Spots are strictly limited. Join the waitlist to secure your early competitive edge.
+          </p>
+        </div>
+
+        <!-- Right: MRI Visualization -->
+        <div class="relative">
+          <svg id="mri-viz-1" viewBox="0 0 460 320" class="w-full" style="filter: drop-shadow(0 0 1px rgba(0,0,0,0.05));">
+            <defs>
+              <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="460" height="320" fill="url(#grid)" rx="8"/>
+            <g id="mri-nodes-1"></g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS SECTION -->
+  <section id="technology" class="py-28 md:py-36 px-6 bg-white">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-black text-center mb-16 transition-all duration-700 opacity-0 translate-y-6 section-fade">
+        The Automated Blueprint
+      </h2>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="how-it-works-grid">
+        <!-- Cards will be generated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section class="py-28 md:py-36 px-6 bg-white border-t border-black/5">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <!-- Left: Scrolling benefits text -->
+        <div class="space-y-8 md:space-y-10 lg:py-12" id="benefits-list">
+          <!-- Benefits will be generated by JS -->
+        </div>
+
+        <!-- Right: Sticky MRI visualization -->
+        <div class="lg:sticky lg:top-24">
+          <div class="relative w-full h-full min-h-[400px] bg-white rounded-lg border border-black/5 overflow-hidden">
+            <svg id="benefit-viz" class="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
+              <defs>
+                <pattern id="benefitGrid" width="25" height="25" patternUnits="userSpaceOnUse">
+                  <path d="M 25 0 L 0 0 0 25" fill="none" stroke="rgba(0,0,0,0.025)" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="400" height="400" fill="url(#benefitGrid)"/>
+              <g id="org-tree"></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDIBILITY SECTION -->
+  <section id="about" class="py-24 md:py-32 px-6 bg-white border-t border-black/5">
+    <div class="max-w-4xl mx-auto text-center transition-all duration-1000 opacity-0 translate-y-8 section-fade">
+      <!-- Web Summit badge -->
+      <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-black/8 bg-black/[0.02] mb-10">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 1l2.47 5.01L17 6.87l-4 3.9.94 5.5L9 13.77l-4.94 2.5.94-5.5-4-3.9 5.53-.86L9 1z" fill="black" opacity="0.7"/>
+        </svg>
+        <span class="text-xs font-medium text-black/60 tracking-wide">
+          Web Summit Rio 2026 — Alpha Startup Program
+        </span>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-black mb-4">
+        Building the Future of Operational Intelligence
+      </h2>
+      <p class="text-base text-black/45 leading-relaxed max-w-2xl mx-auto mb-12">
+        bizMRI is an early-stage AI company rethinking how organizations understand themselves. Selected for the Web Summit Rio 2026 Alpha program, we're working with forward-thinking teams to validate a fundamentally new approach to process discovery.
+      </p>
+
+      <!-- Stats row -->
+      <div class="grid grid-cols-3 gap-8 max-w-lg mx-auto">
+        <div class="text-center">
+          <div class="text-3xl sm:text-4xl font-bold text-black tracking-tight">80%</div>
+          <div class="mt-1 text-[11px] text-black/35 leading-tight whitespace-pre-line">Processes<br/>Undocumented</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl sm:text-4xl font-bold text-black tracking-tight">10x</div>
+          <div class="mt-1 text-[11px] text-black/35 leading-tight whitespace-pre-line">Faster Than<br/>Consulting</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl sm:text-4xl font-bold text-black tracking-tight">0</div>
+          <div class="mt-1 text-[11px] text-black/35 leading-tight whitespace-pre-line">Human Bias<br/>In Discovery</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA SECTION -->
+  <section class="relative py-32 md:py-44 px-6 bg-black overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-black via-black to-neutral-950"></div>
+
+    <div class="relative max-w-3xl mx-auto text-center transition-all duration-1000 opacity-0 translate-y-8 section-fade">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-6">
+        READY TO GAIN EARLY ACCESS?
+      </h2>
+      <p class="text-base sm:text-lg text-white/40 mb-10 max-w-lg mx-auto">
+        Spots for our upcoming beta cohort are strictly limited.
+      </p>
+      <button class="btn-glow-invert inline-flex items-center px-8 py-4 border border-white/20 text-white rounded-md text-sm font-medium tracking-wide hover:border-white/40 transition-all duration-400 open-modal">
+        Apply for the Waitlist
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-black py-8 px-6 border-t border-white/5">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="text-[11px] text-white/25">
+        © 2026 bizMRI.ai — All rights reserved.
+      </div>
+      <div class="flex gap-6 text-[11px] text-white/25">
+        <a href="#" class="hover:text-white/50 transition-colors">Terms</a>
+        <a href="#" class="hover:text-white/50 transition-colors">Privacy</a>
+        <a href="#" class="hover:text-white/50 transition-colors">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WAITLIST MODAL -->
+  <div id="modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4 modal-backdrop bg-black/60">
+    <div class="relative w-full max-w-md bg-black/95 border border-white/10 rounded-xl p-8 shadow-[0_0_60px_rgba(0,0,0,0.5)] animate-fade-in overflow-y-auto max-h-[90vh]">
+      <!-- Close button -->
+      <button
+        id="close-modal"
+        class="absolute top-4 right-4 text-white/30 hover:text-white/70 transition-colors"
+        aria-label="Close"
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 4l10 10M14 4L4 14" />
+        </svg>
+      </button>
+
+      <!-- Form -->
+      <div id="modal-form">
+        <h3 class="text-xl font-semibold text-white mb-1">
+          Apply for Early Access
+        </h3>
+        <p class="text-sm text-white/35 mb-8 leading-relaxed">
+          bizMRI is currently in closed beta. We are onboarding new enterprise partners on a rolling basis. Please provide your details to request an invitation.
+        </p>
+
+        <form id="waitlist-form" class="space-y-5">
+          <div>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="name@company.com"
+              class="floating-input"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="fullName"
+              required
+              placeholder="Full Name"
+              class="floating-input"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="company"
+              required
+              placeholder="Company Name"
+              class="floating-input"
+            />
+          </div>
+          <div>
+            <select
+              name="companySize"
+              required
+              class="dark-select"
+            >
+              <option value="" disabled selected>Company Size</option>
+              <option value="1-50">1–50</option>
+              <option value="51-200">51–200</option>
+              <option value="201-1000">201–1,000</option>
+              <option value="1000+">1,000+</option>
+            </select>
+          </div>
+          <div>
+            <input
+              type="text"
+              name="jobTitle"
+              placeholder="Job Title / Role (e.g., COO, VP of Operations)"
+              class="floating-input"
+            />
+          </div>
+          <div>
+            <select
+              name="objective"
+              required
+              class="dark-select"
+            >
+              <option value="" disabled selected>Primary Objective</option>
+              <option value="map-processes">Map undocumented processes</option>
+              <option value="ai-automation">Identify AI automation opportunities</option>
+              <option value="reduce-bottlenecks">Reduce operational bottlenecks</option>
+              <option value="replace-consulting">Replace slow consulting audits</option>
+            </select>
+          </div>
+
+          <div id="form-error" class="hidden text-sm text-red-400"></div>
+
+          <button
+            type="submit"
+            class="w-full py-3.5 bg-white text-black font-medium text-sm rounded-md hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+          >
+            Submit Application
+          </button>
+        </form>
+
+        <p class="mt-4 text-[10px] text-white/20 text-center leading-relaxed">
+          By applying, you agree to our Beta Terms of Service. We respect your data privacy.
+        </p>
+      </div>
+
+      <!-- Success state -->
+      <div id="modal-success" class="hidden text-center py-8 animate-fade-in">
+        <div class="w-14 h-14 mx-auto mb-6 rounded-full border border-white/20 flex items-center justify-center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12l5 5L20 7" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-2">
+          Application Received.
+        </h3>
+        <p class="text-sm text-white/40 leading-relaxed">
+          Thank you. Our team will review your organization's fit and reach out to the provided email if selected for the next cohort.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== NAVBAR SCROLL EFFECT ======
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-[0_1px_0_rgba(0,0,0,0.04)]');
+      } else {
+        navbar.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-[0_1px_0_rgba(0,0,0,0.04)]');
+      }
+    });
+
+    // ====== MOBILE MENU TOGGLE ======
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      if (mobileMenu.classList.contains('hidden')) {
+        menuIcon.setAttribute('d', 'M2 5h14M2 9h14M2 13h14');
+      } else {
+        menuIcon.setAttribute('d', 'M4 4l10 10M14 4L4 14');
+      }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.setAttribute('d', 'M2 5h14M2 9h14M2 13h14');
+      });
+    });
+
+    // ====== HERO TEXT FADE IN ======
+    const heroTitle = document.getElementById('hero-title');
+    const heroSubtitle = document.getElementById('hero-subtitle');
+
+    setTimeout(() => {
+      heroTitle.classList.remove('opacity-0', 'translate-y-4');
+      heroTitle.classList.add('opacity-100', 'translate-y-0');
+    }, 200);
+
+    setTimeout(() => {
+      heroSubtitle.classList.remove('opacity-0', 'translate-y-4');
+      heroSubtitle.classList.add('opacity-100', 'translate-y-0');
+    }, 900);
+
+    // ====== HOW IT WORKS CARDS ======
+    const steps = [
+      {
+        num: '1',
+        title: 'Define Objectives / Target Your Discovery',
+        description: 'Align discovery goals with strategic outcomes.',
+        icon: '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="14" r="10" /><circle cx="14" cy="14" r="5" /><circle cx="14" cy="14" r="1.5" fill="currentColor" /><circle cx="14" cy="14" r="12" opacity="0.3" stroke-dasharray="2 3" /></svg>'
+      },
+      {
+        num: '2',
+        title: 'AI Agents Deploy',
+        description: 'Relentless, non-biased agents interview your workforce capturing both documented processes and the hidden expertise your team relies on.',
+        icon: '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="6" r="3" /><circle cx="6" cy="20" r="3" /><circle cx="22" cy="20" r="3" /><circle cx="14" cy="14" r="2" fill="currentColor" opacity="0.3" /><line x1="14" y1="9" x2="14" y2="12" /><line x1="12" y1="15.5" x2="8.5" y2="18" /><line x1="16" y1="15.5" x2="19.5" y2="18" /></svg>'
+      },
+      {
+        num: '3',
+        title: 'Extract Deep Insights',
+        description: 'We map the invisible data to pinpoint operational bottlenecks, uncover root pain points, and surface executive-level insights.',
+        icon: '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="10" height="7" rx="2" /><path d="M6 11v2l3-2" /><rect x="15" y="10" width="10" height="7" rx="2" /><path d="M22 17v2l-3-2" /><path d="M8 20h12" stroke-dasharray="2 2" opacity="0.5" /><path d="M14 22v3" opacity="0.5" /></svg>'
+      },
+      {
+        num: '4',
+        title: 'Receive Blueprint',
+        description: 'We deliver a comprehensive, actionable backlog designed to optimize your processes and accelerate your growth.',
+        icon: '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="3" width="20" height="22" rx="2" /><line x1="8" y1="8" x2="20" y2="8" /><line x1="8" y1="12" x2="16" y2="12" /><line x1="8" y1="16" x2="18" y2="16" /><line x1="8" y1="20" x2="13" y2="20" /><path d="M17 18l2 2 4-4" stroke-width="2" /></svg>'
+      }
+    ];
+
+    const grid = document.getElementById('how-it-works-grid');
+    steps.forEach((step, i) => {
+      const card = document.createElement('div');
+      card.className = `relative p-6 rounded-lg border border-black/5 bg-white transition-all duration-300 cursor-default hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:scale-[1.03] hover:border-black/10 shadow-[0_2px_8px_rgba(0,0,0,0.03)]`;
+      card.innerHTML = `
+        <div class="text-black/70 mb-5">
+          ${step.icon}
+        </div>
+        <div class="text-[11px] font-mono text-black/25 mb-2 tracking-wider">
+          STEP ${step.num}
+        </div>
+        <h3 class="text-base font-semibold text-black mb-2 leading-snug">
+          ${step.title}
+        </h3>
+        <p class="text-sm text-black/45 leading-relaxed">
+          ${step.description}
+        </p>
+      `;
+      grid.appendChild(card);
+    });
+
+    // ====== BENEFITS SECTION ======
+    const benefits = [
+      {
+        title: 'DIGITIZE TRIBAL KNOWLEDGE',
+        description: 'Transform undocumented expertise and unspoken workflows into accessible data.',
+      },
+      {
+        title: 'UNCOVER OPERATIONAL PAINS',
+        description: 'Pinpoint hidden bottlenecks and the exact friction points slowing your operations.',
+      },
+      {
+        title: 'MAP AUTOMATION BACKLOGS',
+        description: 'Turn raw discovery data into a clear, prioritized roadmap for automation.',
+      },
+      {
+        title: 'SCALE ORGANIZATIONAL INTELLIGENCE',
+        description: 'Elevate everyday workforce insights into a long-term strategic advantage.',
+      },
+    ];
+
+    const benefitsList = document.getElementById('benefits-list');
+    let activeIdx = -1;
+
+    benefits.forEach((benefit, i) => {
+      const div = document.createElement('div');
+      div.className = `transition-all duration-700 opacity-20 translate-x-2 benefit-item`;
+      div.dataset.index = i;
+      const descHtml = benefit.description
+        ? `<p class="mt-4 max-w-md text-base sm:text-lg font-light leading-relaxed text-black/25 transition-all duration-700 benefit-desc">${benefit.description}</p>`
+        : '';
+      div.innerHTML = `
+        <h3 class="text-2xl sm:text-3xl font-bold tracking-tight text-black/20 transition-all duration-700 benefit-text">
+          ${benefit.title}
+        </h3>
+        ${descHtml}
+        <div class="mt-4 h-[2px] w-0 bg-transparent transition-all duration-700 benefit-underline"></div>
+      `;
+      benefitsList.appendChild(div);
+
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && activeIdx < i) {
+          activeIdx = i;
+          // Update all items up to activeIdx
+          document.querySelectorAll('.benefit-item').forEach((item, idx) => {
+            if (idx <= activeIdx) {
+              item.classList.remove('opacity-20', 'translate-x-2');
+              item.classList.add('opacity-100', 'translate-x-0');
+              item.querySelector('.benefit-text').classList.remove('text-black/20');
+              item.querySelector('.benefit-text').classList.add('text-black');
+              item.querySelector('.benefit-text').style.textShadow = '0 0 40px rgba(0,0,0,0.04)';
+              const desc = item.querySelector('.benefit-desc');
+              if (desc) {
+                desc.classList.remove('text-black/25');
+                desc.classList.add('text-black/50');
+              }
+              item.querySelector('.benefit-underline').classList.remove('w-0', 'bg-transparent');
+              item.querySelector('.benefit-underline').classList.add('w-12', 'bg-black/20');
+            }
+          });
+        }
+      }, { threshold: 0.6 });
+
+      observer.observe(div);
+    });
+
+    // ====== MRI VISUALIZATION #1 (AI CURE) ======
+    function createMRIVisualization(svgId, speed = 0.3) {
+      const svg = document.getElementById(svgId);
+      if (!svgId || !svg) return;
+
+      const nodes = [
+        { x: 120, y: 80, r: 6 }, { x: 200, y: 60, r: 4 }, { x: 280, y: 90, r: 5 },
+        { x: 160, y: 140, r: 5 }, { x: 240, y: 130, r: 7 }, { x: 320, y: 110, r: 4 },
+        { x: 100, y: 180, r: 4 }, { x: 180, y: 200, r: 6 }, { x: 260, y: 190, r: 5 },
+        { x: 340, y: 170, r: 4 }, { x: 140, y: 250, r: 5 }, { x: 220, y: 260, r: 4 },
+        { x: 300, y: 240, r: 6 }, { x: 380, y: 200, r: 5 }, { x: 60, y: 130, r: 3 },
+        { x: 400, y: 140, r: 3 },
+      ];
+
+      const connections = [
+        [0,1],[1,2],[0,3],[1,4],[2,5],[3,4],[4,5],[3,6],[3,7],[4,8],[5,9],
+        [7,8],[8,9],[6,10],[7,10],[7,11],[8,12],[9,13],[10,11],[11,12],[12,13],
+        [14,0],[14,6],[15,5],[15,9],[15,13]
+      ];
+
+      let offset = 0;
+
+      function animate() {
+        offset = (offset + speed) % 360;
+        const scanY = 40 + (Math.sin(offset * 0.02) + 1) * 130;
+
+        // Clear and redraw
+        const nodesGroup = document.getElementById('mri-nodes-1');
+        if (!nodesGroup) return;
+        nodesGroup.innerHTML = '';
+
+        // Connections
+        connections.forEach(([a, b], i) => {
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', nodes[a].x);
+          line.setAttribute('y1', nodes[a].y);
+          line.setAttribute('x2', nodes[b].x);
+          line.setAttribute('y2', nodes[b].y);
+          line.setAttribute('stroke', 'rgba(0,0,0,0.08)');
+          line.setAttribute('stroke-width', '1');
+          nodesGroup.appendChild(line);
+        });
+
+        // Scanning line
+        const scanLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        scanLine.setAttribute('x1', '0');
+        scanLine.setAttribute('y1', scanY);
+        scanLine.setAttribute('x2', '460');
+        scanLine.setAttribute('y2', scanY);
+        scanLine.setAttribute('stroke', 'rgba(0,0,0,0.06)');
+        scanLine.setAttribute('stroke-width', '1');
+        nodesGroup.appendChild(scanLine);
+
+        const scanRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        scanRect.setAttribute('x', '0');
+        scanRect.setAttribute('y', scanY - 8);
+        scanRect.setAttribute('width', '460');
+        scanRect.setAttribute('height', '16');
+        scanRect.setAttribute('fill', 'url(#scanGrad)');
+        scanRect.setAttribute('opacity', '0.5');
+        nodesGroup.appendChild(scanRect);
+
+        // Nodes
+        nodes.forEach((node, i) => {
+          const nearScan = Math.abs(node.y - scanY) < 30;
+
+          if (nearScan) {
+            const glow = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            glow.setAttribute('cx', node.x);
+            glow.setAttribute('cy', node.y);
+            glow.setAttribute('r', node.r * 3);
+            glow.setAttribute('fill', 'rgba(0,0,0,0.02)');
+            nodesGroup.appendChild(glow);
+          }
+
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', node.x);
+          circle.setAttribute('cy', node.y);
+          circle.setAttribute('r', node.r);
+          circle.setAttribute('fill', nearScan ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.15)');
+          circle.setAttribute('class', 'transition-all duration-300');
+          nodesGroup.appendChild(circle);
+        });
+
+        // Text boxes
+        [[70, 55, 60], [250, 45, 70], [350, 65, 50], [90, 220, 55], [300, 210, 65]].forEach(([x, y, w]) => {
+          const rect1 = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect1.setAttribute('x', x);
+          rect1.setAttribute('y', y);
+          rect1.setAttribute('width', w);
+          rect1.setAttribute('height', '8');
+          rect1.setAttribute('rx', '1');
+          rect1.setAttribute('fill', 'rgba(0,0,0,0.04)');
+          nodesGroup.appendChild(rect1);
+
+          const rect2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect2.setAttribute('x', x);
+          rect2.setAttribute('y', y + 12);
+          rect2.setAttribute('width', w * 0.7);
+          rect2.setAttribute('height', '4');
+          rect2.setAttribute('rx', '1');
+          rect2.setAttribute('fill', 'rgba(0,0,0,0.025)');
+          nodesGroup.appendChild(rect2);
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+
+    // Add SVG defs for MRI visualization
+    const mriSvg = document.getElementById('mri-viz-1');
+    if (mriSvg) {
+      const defs = mriSvg.querySelector('defs');
+      const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+      grad.setAttribute('id', 'scanGrad');
+      grad.setAttribute('x1', '0');
+      grad.setAttribute('y1', '0');
+      grad.setAttribute('x2', '0');
+      grad.setAttribute('y2', '1');
+
+      const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop1.setAttribute('offset', '0%');
+      stop1.setAttribute('stop-color', 'rgba(0,0,0,0)');
+      grad.appendChild(stop1);
+
+      const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop2.setAttribute('offset', '50%');
+      stop2.setAttribute('stop-color', 'rgba(0,0,0,0.03)');
+      grad.appendChild(stop2);
+
+      const stop3 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop3.setAttribute('offset', '100%');
+      stop3.setAttribute('stop-color', 'rgba(0,0,0,0)');
+      grad.appendChild(stop3);
+
+      defs.appendChild(grad);
+    }
+
+    createMRIVisualization('mri-viz-1', 0.3);
+
+    // ====== BENEFIT VISUALIZATION (ORG TREE) ======
+    function createBenefitViz() {
+      const svg = document.getElementById('benefit-viz');
+      const orgTree = document.getElementById('org-tree');
+
+      const positions = [
+        [200,60],[120,120],[280,120],[80,190],[160,190],[240,190],[320,190],
+        [100,260],[200,260],[300,260],[150,330],[250,330]
+      ];
+
+      let scanPos = 0;
+
+      function animateBenefit() {
+        scanPos = (scanPos + 0.4) % 200;
+        const y = Math.abs(scanPos - 100);
+
+        orgTree.innerHTML = '';
+
+        // Nodes and connections
+        positions.forEach(([cx, cy], i) => {
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', cx);
+          circle.setAttribute('cy', cy);
+          circle.setAttribute('r', '4');
+          const opacity = Math.abs(cy/100 - y/100) < 0.4 ? 0.6 : 0.08;
+          circle.setAttribute('fill', `rgba(0,0,0,${opacity})`);
+          circle.setAttribute('class', 'transition-all duration-500');
+          g.appendChild(circle);
+
+          if (i > 0) {
+            const parentMap = [200,120,280,80,160,240,320,100,200,300,150,250];
+            const parentYMap = [60,60,60,120,120,120,120,190,190,190,260,260];
+
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', cx);
+            line.setAttribute('y1', cy);
+            line.setAttribute('x2', parentMap[Math.max(0, Math.floor((i-1)/2))]);
+            line.setAttribute('y2', parentYMap[Math.max(0, Math.floor((i-1)/2))]);
+            const lineOpacity = Math.abs(cy/100 - y/100) < 0.5 ? 0.12 : 0.03;
+            line.setAttribute('stroke', `rgba(0,0,0,${lineOpacity})`);
+            line.setAttribute('stroke-width', '1');
+            line.setAttribute('class', 'transition-all duration-500');
+            g.appendChild(line);
+          }
+
+          orgTree.appendChild(g);
+        });
+
+        // Scanning light bar
+        const scanRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        scanRect.setAttribute('x', '0');
+        scanRect.setAttribute('y', (y/100*400 - 10));
+        scanRect.setAttribute('width', '400');
+        scanRect.setAttribute('height', '20');
+        scanRect.setAttribute('fill', 'url(#scanGradBenefit)');
+        scanRect.setAttribute('opacity', '0.6');
+        orgTree.appendChild(scanRect);
+
+        requestAnimationFrame(animateBenefit);
+      }
+
+      // Add gradient defs
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+      grad.setAttribute('id', 'scanGradBenefit');
+      grad.setAttribute('x1', '0');
+      grad.setAttribute('y1', '0');
+      grad.setAttribute('x2', '0');
+      grad.setAttribute('y2', '1');
+
+      const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop1.setAttribute('offset', '0%');
+      stop1.setAttribute('stop-color', 'rgba(0,0,0,0)');
+      grad.appendChild(stop1);
+
+      const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop2.setAttribute('offset', '50%');
+      stop2.setAttribute('stop-color', 'rgba(0,0,0,0.04)');
+      grad.appendChild(stop2);
+
+      const stop3 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+      stop3.setAttribute('offset', '100%');
+      stop3.setAttribute('stop-color', 'rgba(0,0,0,0)');
+      grad.appendChild(stop3);
+
+      defs.appendChild(grad);
+      svg.appendChild(defs);
+
+      animateBenefit();
+    }
+
+    createBenefitViz();
+
+    // ====== INTERSECTION OBSERVER FOR SECTIONS ======
+    const sectionFades = document.querySelectorAll('.section-fade');
+    const cardFades = document.querySelectorAll('.section-fade-card');
+
+    const sectionObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.remove('opacity-0', 'translate-y-8');
+        entry.target.classList.add('opacity-100', 'translate-y-0');
+      }
+    }, { threshold: 0.15 });
+
+    sectionFades.forEach(el => sectionObserver.observe(el));
+    cardFades.forEach(el => sectionObserver.observe(el));
+
+    // ====== MODAL FUNCTIONALITY ======
+    const modal = document.getElementById('modal');
+    const modalForm = document.getElementById('modal-form');
+    const modalSuccess = document.getElementById('modal-success');
+    const closeModalBtn = document.getElementById('close-modal');
+    const waitlistForm = document.getElementById('waitlist-form');
+    const openModalBtns = document.querySelectorAll('.open-modal');
+
+    openModalBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      // Reset form
+      waitlistForm.reset();
+      modalForm.classList.remove('hidden');
+      modalSuccess.classList.add('hidden');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        waitlistForm.reset();
+        modalForm.classList.remove('hidden');
+        modalSuccess.classList.add('hidden');
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        waitlistForm.reset();
+        modalForm.classList.remove('hidden');
+        modalSuccess.classList.add('hidden');
+      }
+    });
+
+    // Form submission
+    waitlistForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(waitlistForm);
+      const data = {
+        email: formData.get('email'),
+        fullName: formData.get('fullName'),
+        company: formData.get('company'),
+        companySize: formData.get('companySize'),
+        jobTitle: formData.get('jobTitle'),
+        objective: formData.get('objective'),
+      };
+
+      const submitBtn = waitlistForm.querySelector('button[type="submit"]');
+      const errorDiv = document.getElementById('form-error');
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+        errorDiv.classList.add('hidden');
+
+        // Simulate form submission (replace with your endpoint)
+        // For demo, just show success after 1s
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Show success state
+        modalForm.classList.add('hidden');
+        modalSuccess.classList.remove('hidden');
+
+      } catch (err) {
+        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Application';
+      }
+    });
+  </script>
+</body>
+</html>
