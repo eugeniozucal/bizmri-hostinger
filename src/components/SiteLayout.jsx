@@ -6,7 +6,7 @@ import { Footer } from './Footer'
 
 export function SiteLayout({ onOpenModal }) {
   return (
-    <div className="min-h-screen bg-white text-black scroll-smooth flex flex-col">
+    <div className="min-h-screen bg-neutral-950 text-zinc-100 scroll-smooth flex flex-col">
       <ScrollToTop />
       <Navbar onOpenModal={onOpenModal} />
       <Outlet />

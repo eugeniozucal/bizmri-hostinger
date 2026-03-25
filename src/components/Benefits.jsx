@@ -1,129 +1,169 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
+import { useI18n } from '../i18n/I18nContext.jsx'
 
-const benefits = [
-  {
-    title: 'DIGITIZE TRIBAL KNOWLEDGE',
-    description:
-      'Transform undocumented expertise and unspoken workflows into accessible data.',
-  },
-  {
-    title: 'UNCOVER OPERATIONAL PAINS',
-    description:
-      'Pinpoint hidden bottlenecks and the exact friction points slowing your operations.',
-  },
-  {
-    title: 'MAP AUTOMATION BACKLOGS',
-    description:
-      'Turn raw discovery data into a clear, prioritized roadmap for automation.',
-  },
-  {
-    title: 'SCALE ORGANIZATIONAL INTELLIGENCE',
-    description:
-      'Elevate everyday workforce insights into a long-term strategic advantage.',
-  },
+/** ViewBox 400×400 — org-style tree: explicit edges so every segment connects real endpoints */
+const MRI_NODES = [
+  { x: 200, y: 48 },
+  { x: 118, y: 108 },
+  { x: 282, y: 108 },
+  { x: 68, y: 178 },
+  { x: 168, y: 178 },
+  { x: 232, y: 178 },
+  { x: 332, y: 178 },
+  { x: 118, y: 248 },
+  { x: 282, y: 248 },
+  { x: 78, y: 318 },
+  { x: 158, y: 318 },
+  { x: 242, y: 318 },
+  { x: 322, y: 318 },
 ]
 
-// Sticky MRI visualization for right column
+const MRI_EDGES = [
+  [0, 1],
+  [0, 2],
+  [1, 3],
+  [1, 4],
+  [2, 5],
+  [2, 6],
+  [3, 7],
+  [4, 7],
+  [5, 8],
+  [6, 8],
+  [7, 9],
+  [7, 10],
+  [8, 11],
+  [8, 12],
+]
+
 function StickyMRIVisual() {
+  const uid = useId().replace(/:/g, '')
+  const gridPatId = `benefitGrid-${uid}`
+  const scanGradId = `scanGradBenefit-${uid}`
+
   const [scanPos, setScanPos] = useState(0)
 
   useEffect(() => {
     let frame
     const animate = () => {
-      setScanPos(prev => (prev + 0.4) % 200)
+      setScanPos((prev) => (prev + 0.4) % 200)
       frame = requestAnimationFrame(animate)
     }
     frame = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(frame)
   }, [])
 
-  const y = Math.abs(scanPos - 100) // bounce 0→100→0
+  const phase = Math.abs(scanPos - 100)
+  const scanLineY = (phase / 100) * 380 + 10
+
+  const nodeNearScan = (ny) => Math.abs(ny - scanLineY) < 42
+  const edgeNearScan = (y1, y2) => Math.abs((y1 + y2) / 2 - scanLineY) < 55
 
   return (
-    <div className="relative w-full h-full min-h-[220px] sm:min-h-[300px] lg:min-h-[400px] bg-white rounded-lg border border-black/5 overflow-hidden shadow-[0_1px_0_rgba(0,0,0,0.04)]">
-      {/* Grid pattern */}
+    <div className="relative w-full h-full min-h-[220px] sm:min-h-[300px] lg:min-h-[400px] bg-neutral-900/60 rounded-lg border border-white/10 overflow-hidden shadow-[0_1px_0_rgba(255,255,255,0.06)]">
       <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
         <defs>
-          <pattern id="benefitGrid" width="25" height="25" patternUnits="userSpaceOnUse">
-            <path d="M 25 0 L 0 0 0 25" fill="none" stroke="rgba(0,0,0,0.025)" strokeWidth="0.5"/>
+          <pattern id={gridPatId} width="25" height="25" patternUnits="userSpaceOnUse">
+            <path d="M 25 0 L 0 0 0 25" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
           </pattern>
+          <linearGradient id={scanGradId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.06)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
         </defs>
-        <rect width="400" height="400" fill="url(#benefitGrid)"/>
+        <rect width="400" height="400" fill={`url(#${gridPatId})`} />
 
-        {/* Abstract org structure nodes */}
-        {[
-          [200,60],[120,120],[280,120],[80,190],[160,190],[240,190],[320,190],
-          [100,260],[200,260],[300,260],[150,330],[250,330]
-        ].map(([cx, cy], i) => (
-          <g key={i}>
-            <circle cx={cx} cy={cy} r="4" fill={`rgba(0,0,0,${Math.abs(cy/100 - y/100) < 0.4 ? 0.55 : 0.1})`} className="transition-all duration-500" />
-            {i > 0 && (
+        <g strokeLinecap="round">
+          {MRI_EDGES.map(([from, to], i) => {
+            const a = MRI_NODES[from]
+            const b = MRI_NODES[to]
+            const strong = edgeNearScan(a.y, b.y)
+            return (
               <line
-                x1={cx} y1={cy}
-                x2={[200,120,280,80,160,240,320,100,200,300,150,250][Math.max(0, Math.floor((i-1)/2))]}
-                y2={[60,60,60,120,120,120,120,190,190,190,260,260][Math.max(0, Math.floor((i-1)/2))]}
-                stroke={`rgba(0,0,0,${Math.abs(cy/100 - y/100) < 0.5 ? 0.12 : 0.03})`}
+                key={`e-${from}-${to}-${i}`}
+                x1={a.x}
+                y1={a.y}
+                x2={b.x}
+                y2={b.y}
+                stroke={`rgba(255,255,255,${strong ? 0.22 : 0.08})`}
                 strokeWidth="1"
                 className="transition-all duration-500"
               />
-            )}
-          </g>
-        ))}
+            )
+          })}
+        </g>
 
-        {/* Scanning light bar */}
-        <rect x="0" y={y/100*400 - 10} width="400" height="20" fill="url(#scanGradBenefit)" opacity="0.6" />
-        <defs>
-          <linearGradient id="scanGradBenefit" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgba(0,0,0,0)" />
-            <stop offset="50%" stopColor="rgba(0,0,0,0.04)" />
-            <stop offset="100%" stopColor="rgba(0,0,0,0)" />
-          </linearGradient>
-        </defs>
+        <g>
+          {MRI_NODES.map((n, i) => {
+            const on = nodeNearScan(n.y)
+            return (
+              <circle
+                key={`n-${i}`}
+                cx={n.x}
+                cy={n.y}
+                r={on ? 5 : 4}
+                fill={`rgba(255,255,255,${on ? 0.85 : 0.18})`}
+                className="transition-all duration-500"
+              />
+            )
+          })}
+        </g>
+
+        <rect
+          x="0"
+          y={scanLineY - 10}
+          width="400"
+          height="20"
+          fill={`url(#${scanGradId})`}
+          opacity="0.65"
+        />
       </svg>
     </div>
   )
 }
 
 export function Benefits() {
+  const { locale, t } = useI18n()
+  const benefits = t('benefits.items')
   const [activeIdx, setActiveIdx] = useState(-1)
   const itemRefs = useRef([])
 
   useEffect(() => {
-    const observers = benefits.map((_, i) => {
+    const b = t('benefits.items')
+    const observers = b.map((_, i) => {
       const observer = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) setActiveIdx(prev => Math.max(prev, i))
+          if (entry.isIntersecting) setActiveIdx((prev) => Math.max(prev, i))
         },
         { threshold: 0.6 }
       )
       if (itemRefs.current[i]) observer.observe(itemRefs.current[i])
       return observer
     })
-    return () => observers.forEach(o => o.disconnect())
-  }, [])
+    return () => observers.forEach((o) => o.disconnect())
+  }, [locale, t])
 
   return (
-    <section className="scroll-mt-20 py-16 md:py-28 lg:py-36 px-4 sm:px-6 bg-white border-t border-black/5">
+    <section className="scroll-mt-20 py-16 md:py-28 lg:py-36 px-4 sm:px-6 bg-neutral-950 border-t border-white/10">
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 lg:items-start">
-          {/* Left: Scrolling benefits text */}
           <div className="space-y-8 md:space-y-10 lg:py-12">
             {benefits.map((benefit, i) => (
               <div
                 key={i}
-                ref={el => itemRefs.current[i] = el}
+                ref={(el) => {
+                  itemRefs.current[i] = el
+                }}
                 className={`transition-all duration-700 ${
-                  activeIdx >= i
-                    ? 'opacity-100 translate-x-0'
-                    : 'opacity-20 translate-x-2'
+                  activeIdx >= i ? 'opacity-100 translate-x-0' : 'opacity-20 translate-x-2'
                 }`}
               >
                 <h3
                   className={`text-xl sm:text-2xl md:text-3xl font-bold tracking-tight transition-all duration-700 ${
-                    activeIdx >= i ? 'text-black' : 'text-black/20'
+                    activeIdx >= i ? 'text-zinc-100' : 'text-zinc-600'
                   }`}
                   style={{
-                    textShadow: activeIdx >= i ? '0 0 40px rgba(0,0,0,0.04)' : 'none'
+                    textShadow: activeIdx >= i ? '0 0 40px rgba(255,255,255,0.06)' : 'none',
                   }}
                 >
                   {benefit.title}
@@ -131,20 +171,21 @@ export function Benefits() {
                 {benefit.description && (
                   <p
                     className={`mt-3 max-w-md text-base sm:text-lg font-light leading-relaxed transition-all duration-700 ${
-                      activeIdx >= i ? 'text-black/50' : 'text-black/25'
+                      activeIdx >= i ? 'text-zinc-400' : 'text-zinc-600'
                     }`}
                   >
                     {benefit.description}
                   </p>
                 )}
-                <div className={`mt-3 h-[2px] transition-all duration-700 ${
-                  activeIdx >= i ? 'w-12 bg-black/20' : 'w-0 bg-transparent'
-                }`}></div>
+                <div
+                  className={`mt-3 h-[2px] transition-all duration-700 ${
+                    activeIdx >= i ? 'w-12 bg-white/25' : 'w-0 bg-transparent'
+                  }`}
+                />
               </div>
             ))}
           </div>
 
-          {/* Right: Sticky MRI visualization */}
           <div className="lg:sticky lg:top-24">
             <StickyMRIVisual />
           </div>

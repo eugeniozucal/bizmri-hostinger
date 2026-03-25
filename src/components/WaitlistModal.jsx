@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { CustomSelect } from './CustomSelect'
+import { useI18n } from '../i18n/I18nContext.jsx'
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xovdpvbq' // Replace with your Formspree form ID
-
-const COMPANY_SIZE_OPTIONS = [
-  { value: '1-50', label: '1–50' },
-  { value: '51-200', label: '51–200' },
-  { value: '201-1000', label: '201–1,000' },
-  { value: '1000+', label: '1,000+' },
-]
-
-const OBJECTIVE_OPTIONS = [
-  { value: 'map-processes', label: 'Map undocumented processes' },
-  { value: 'ai-automation', label: 'Identify AI automation opportunities' },
-  { value: 'reduce-bottlenecks', label: 'Reduce operational bottlenecks' },
-  { value: 'replace-consulting', label: 'Replace slow consulting audits' },
-]
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xovdpvbq'
 
 export function WaitlistModal({ isOpen, onClose }) {
+  const { t } = useI18n()
+  const companySizeOptions = t('waitlist.companySizes')
+  const objectiveOptions = t('waitlist.objectives')
+
   const [formData, setFormData] = useState({
     email: '',
     fullName: '',
@@ -58,7 +49,7 @@ export function WaitlistModal({ isOpen, onClose }) {
     setError(null)
 
     if (!formData.companySize || !formData.objective) {
-      setError('Please select company size and primary objective.')
+      setError(t('waitlist.errSelect'))
       return
     }
 
@@ -74,10 +65,10 @@ export function WaitlistModal({ isOpen, onClose }) {
       if (res.ok) {
         setIsSubmitted(true)
       } else {
-        setError('Something went wrong. Please try again.')
+        setError(t('waitlist.errGeneric'))
       }
     } catch (err) {
-      setError('Network error. Please check your connection.')
+      setError(t('waitlist.errNetwork'))
     } finally {
       setIsSubmitting(false)
     }
@@ -87,7 +78,7 @@ export function WaitlistModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center px-3 py-4 sm:px-4 modal-backdrop bg-black/60"
+      className="fixed inset-0 z-[100] flex items-center justify-center px-3 py-4 sm:px-4 modal-backdrop bg-black/70"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
@@ -100,7 +91,7 @@ export function WaitlistModal({ isOpen, onClose }) {
           type="button"
           onClick={onClose}
           className="absolute right-3 top-3 z-10 rounded-md p-1.5 text-white/35 transition-colors hover:bg-white/5 hover:text-white/80 sm:right-4 sm:top-4"
-          aria-label="Close"
+          aria-label={t('waitlist.close')}
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M4 4l10 10M14 4L4 14" />
@@ -114,20 +105,13 @@ export function WaitlistModal({ isOpen, onClose }) {
                 <path d="M5 12l5 5L20 7" />
               </svg>
             </div>
-            <h3 className="mb-2 text-lg font-semibold text-white sm:text-xl">Application Received.</h3>
-            <p className="text-sm leading-relaxed text-white/45">
-              Thank you. Our team will review your organization&apos;s fit and reach out if you&apos;re selected for the
-              next cohort.
-            </p>
+            <h3 className="mb-2 text-lg font-semibold text-white sm:text-xl">{t('waitlist.successTitle')}</h3>
+            <p className="text-sm leading-relaxed text-white/45">{t('waitlist.successBody')}</p>
           </div>
         ) : (
           <>
-            <h3 className="pr-8 text-lg font-semibold leading-tight text-white sm:pr-10 sm:text-xl">
-              Apply for Early Access
-            </h3>
-            <p className="mt-2 text-xs leading-relaxed text-white/45 sm:mt-2.5 sm:text-sm sm:leading-snug">
-              Invite-only beta. Share your details—we&apos;ll email you if there&apos;s a fit.
-            </p>
+            <h3 className="pr-8 text-lg font-semibold leading-tight text-white sm:pr-10 sm:text-xl">{t('waitlist.title')}</h3>
+            <p className="mt-2 text-xs leading-relaxed text-white/45 sm:mt-2.5 sm:text-sm sm:leading-snug">{t('waitlist.subtitle')}</p>
 
             <form onSubmit={handleSubmit} className="mt-5 space-y-3.5 sm:mt-6 sm:space-y-4" noValidate>
               <div>
@@ -137,7 +121,7 @@ export function WaitlistModal({ isOpen, onClose }) {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="name@company.com"
+                  placeholder={t('waitlist.emailPh')}
                   className="floating-input"
                   autoComplete="email"
                 />
@@ -149,7 +133,7 @@ export function WaitlistModal({ isOpen, onClose }) {
                   required
                   value={formData.fullName}
                   onChange={handleChange}
-                  placeholder="Full name"
+                  placeholder={t('waitlist.fullNamePh')}
                   className="floating-input"
                   autoComplete="name"
                 />
@@ -161,7 +145,7 @@ export function WaitlistModal({ isOpen, onClose }) {
                   required
                   value={formData.company}
                   onChange={handleChange}
-                  placeholder="Company name"
+                  placeholder={t('waitlist.companyPh')}
                   className="floating-input"
                   autoComplete="organization"
                 />
@@ -171,10 +155,10 @@ export function WaitlistModal({ isOpen, onClose }) {
                   name="companySize"
                   value={formData.companySize}
                   onChange={handleChange}
-                  options={COMPANY_SIZE_OPTIONS}
-                  placeholder="Company size"
+                  options={companySizeOptions}
+                  placeholder={t('waitlist.companySizePh')}
                   required
-                  aria-label="Company size"
+                  aria-label={t('waitlist.companySizeAria')}
                 />
               </div>
               <div>
@@ -183,7 +167,7 @@ export function WaitlistModal({ isOpen, onClose }) {
                   name="jobTitle"
                   value={formData.jobTitle}
                   onChange={handleChange}
-                  placeholder="Job title / role"
+                  placeholder={t('waitlist.jobTitlePh')}
                   className="floating-input"
                   autoComplete="organization-title"
                 />
@@ -193,10 +177,10 @@ export function WaitlistModal({ isOpen, onClose }) {
                   name="objective"
                   value={formData.objective}
                   onChange={handleChange}
-                  options={OBJECTIVE_OPTIONS}
-                  placeholder="Primary objective"
+                  options={objectiveOptions}
+                  placeholder={t('waitlist.objectivePh')}
                   required
-                  aria-label="Primary objective"
+                  aria-label={t('waitlist.objectiveAria')}
                 />
               </div>
 
@@ -205,15 +189,13 @@ export function WaitlistModal({ isOpen, onClose }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-1 w-full rounded-md bg-white py-3 text-sm font-medium text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.12)] disabled:cursor-not-allowed disabled:opacity-50 sm:py-3.5"
+                className="mt-1 w-full rounded-md border border-emerald-800 bg-emerald-800 py-3 text-sm font-medium text-white shadow-[0_4px_14px_rgba(6,95,70,0.45)] transition-all duration-300 hover:border-emerald-900 hover:bg-emerald-900 hover:shadow-[0_6px_22px_rgba(6,78,59,0.5)] disabled:cursor-not-allowed disabled:opacity-50 sm:py-3.5"
               >
-                {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                {isSubmitting ? t('waitlist.submitting') : t('waitlist.submit')}
               </button>
             </form>
 
-            <p className="mt-3 text-center text-[10px] leading-relaxed text-white/25 sm:mt-4">
-              By applying, you agree to our Beta Terms of Service. We respect your data privacy.
-            </p>
+            <p className="mt-3 text-center text-[10px] leading-relaxed text-white/25 sm:mt-4">{t('waitlist.legal')}</p>
           </>
         )}
       </div>

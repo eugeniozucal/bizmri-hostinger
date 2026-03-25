@@ -12,35 +12,35 @@
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #0a0a0a;
+  color: #fafafa;
   scrollbar-width: thin;
-  scrollbar-color: #c8c8c8 #f0f0f0;
+  scrollbar-color: #52525b #18181b;
 }
 
-/* Light UI: subtle scrollbar (avoids harsh white track on mobile) */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f0f0f0;
+  background: #18181b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c8c8c8;
+  background: #52525b;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: #71717a;
 }
 
 /* Fixed header: anchor links land below the nav (h-14 = 3.5rem; avoid extra blank on mobile) */
@@ -56,8 +56,8 @@ section[id] {
 
 /* Selection styling */
 ::selection {
-  background-color: rgba(0, 0, 0, 0.15);
-  color: #000000;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fafafa;
 }
 
 /* Glow button effect */
