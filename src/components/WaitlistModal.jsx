@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { CustomSelect } from './CustomSelect'
 import { useI18n } from '../i18n/I18nContext.jsx'
-
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xovdpvbq'
+import { WAITLIST_REGISTER_URL, buildWaitlistPayload } from '../config/waitlist.js'
 
 export function WaitlistModal({ isOpen, onClose }) {
   const { t } = useI18n()
   const companySizeOptions = t('waitlist.companySizes')
   const objectiveOptions = t('waitlist.objectives')
+  const heardAboutOptions = t('waitlist.heardAboutOptions')
 
   const [formData, setFormData] = useState({
     email: '',
@@ -16,6 +16,7 @@ export function WaitlistModal({ isOpen, onClose }) {
     companySize: '',
     jobTitle: '',
     objective: '',
+    heardAbout: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -48,26 +49,39 @@ export function WaitlistModal({ isOpen, onClose }) {
     e.preventDefault()
     setError(null)
 
-    if (!formData.companySize || !formData.objective) {
-      setError(t('waitlist.errSelect'))
+    if (!formData.email.trim() || !formData.fullName.trim() || !formData.company.trim()) {
+      setError(t('waitlist.errRequired'))
       return
     }
 
     setIsSubmitting(true)
 
+    const payload = buildWaitlistPayload(formData, objectiveOptions, heardAboutOptions)
+    const headers = { 'Content-Type': 'application/json', Accept: 'application/json' }
+    const anon = import.meta.env.VITE_SUPABASE_ANON_KEY
+    if (anon) headers.Authorization = `Bearer ${anon}`
+
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch(WAITLIST_REGISTER_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(formData),
+        headers,
+        body: JSON.stringify(payload),
       })
 
       if (res.ok) {
         setIsSubmitted(true)
       } else {
-        setError(t('waitlist.errGeneric'))
+        let msg = t('waitlist.errGeneric')
+        try {
+          const data = await res.json()
+          if (data?.error) msg = typeof data.error === 'string' ? data.error : msg
+          else if (data?.message) msg = typeof data.message === 'string' ? data.message : msg
+        } catch {
+          /* ignore */
+        }
+        setError(msg)
       }
-    } catch (err) {
+    } catch {
       setError(t('waitlist.errNetwork'))
     } finally {
       setIsSubmitting(false)
@@ -157,7 +171,6 @@ export function WaitlistModal({ isOpen, onClose }) {
                   onChange={handleChange}
                   options={companySizeOptions}
                   placeholder={t('waitlist.companySizePh')}
-                  required
                   aria-label={t('waitlist.companySizeAria')}
                 />
               </div>
@@ -179,8 +192,17 @@ export function WaitlistModal({ isOpen, onClose }) {
                   onChange={handleChange}
                   options={objectiveOptions}
                   placeholder={t('waitlist.objectivePh')}
-                  required
                   aria-label={t('waitlist.objectiveAria')}
+                />
+              </div>
+              <div>
+                <CustomSelect
+                  name="heardAbout"
+                  value={formData.heardAbout}
+                  onChange={handleChange}
+                  options={heardAboutOptions}
+                  placeholder={t('waitlist.heardAboutPh')}
+                  aria-label={t('waitlist.heardAboutAria')}
                 />
               </div>
 

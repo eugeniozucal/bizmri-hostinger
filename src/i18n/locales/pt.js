@@ -43,7 +43,7 @@ export default {
   },
   solution: {
     h2: 'A bizMRI digitaliza seu conhecimento invisível.',
-    p: 'Ao capturar o conhecimento invisível da sua organização, nossos agentes de IA revelam dores operacionais profundas e oportunidades de melhoria inexploradas. Tenha um roteiro claro e priorizado para saber exatamente por onde começar — com ganhos de produtividade e vantagem para se tornar o próximo caso de sucesso do seu setor.',
+    p: 'Além dos processos padrão, nossos agentes de IA revelam dores operacionais profundas e oportunidades de melhoria inexploradas. Tenha um roteiro claro e priorizado para saber exatamente onde atacar primeiro, com ganhos massivos de produtividade e a vantagem inicial necessária para se tornar o próximo caso de sucesso do seu setor.',
     cta: 'Entrar na lista de espera',
     footnote: 'As vagas são estritamente limitadas. Entre na lista para garantir sua vantagem competitiva antecipada.',
   },
@@ -128,10 +128,12 @@ export default {
     jobTitlePh: 'Cargo / função',
     objectivePh: 'Objetivo principal',
     objectiveAria: 'Objetivo principal',
+    heardAboutPh: 'Como você conheceu a bizMRI?',
+    heardAboutAria: 'Como você conheceu a bizMRI?',
     submit: 'Enviar solicitação',
     submitting: 'Enviando...',
     legal: 'Ao enviar, você aceita os Termos beta do serviço. Respeitamos a privacidade dos seus dados.',
-    errSelect: 'Selecione o porte da empresa e o objetivo principal.',
+    errRequired: 'Informe e-mail, nome completo e empresa.',
     errGeneric: 'Algo deu errado. Tente novamente.',
     errNetwork: 'Erro de rede. Verifique sua conexão.',
     companySizes: [
@@ -145,6 +147,13 @@ export default {
       { value: 'ai-automation', label: 'Identificar oportunidades de automação com IA' },
       { value: 'reduce-bottlenecks', label: 'Reduzir gargalos operacionais' },
       { value: 'replace-consulting', label: 'Substituir auditorias de consultoria lentas' },
+    ],
+    heardAboutOptions: [
+      { value: 'search_engine', label: 'Motor de busca' },
+      { value: 'social_media', label: 'Redes sociais' },
+      { value: 'linkedin', label: 'LinkedIn' },
+      { value: 'event', label: 'Evento' },
+      { value: 'colleague', label: 'Colega / Amigo' },
     ],
   },
   contactPage: {
@@ -184,7 +193,7 @@ export default {
       },
       {
         h: '7. Limitação de responsabilidade',
-        p: 'Na máxima extensão permitida por lei, a bizMRI e seus fornecedores não serão responsáveis por danos indiretos, incidentais, especiais, consequenciais ou punitivos, nem por perda de lucros, dados ou goodwill. Nossa responsabilidade agregada por qualquer reclamação decorrente destes Termos ou do Serviço não excederá o maior entre (a) o valor pago por você pelo Serviço nos doze meses anteriores à reclamação ou (b) cem dólares americanos (US$ 100), se você não tiver pago taxas.',
+        p: 'Na máxima extensão permitida por lei, a bizMRI e seus fornecedores não serão responsáveis por danos indiretos, incidentais, especiais, consequenciais ou punitivos, nem por perda de lucros, dados ou goodwill. Nossa responsabilidade total por qualquer reclamação relacionada a estes Termos ou ao Serviço ficará limitada na medida máxima permitida pela lei aplicável e por qualquer acordo separado entre você e a bizMRI.',
       },
       {
         h: '8. Alterações',

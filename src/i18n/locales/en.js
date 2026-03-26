@@ -47,7 +47,7 @@ export default {
   },
   solution: {
     h2: 'bizMRI Digitizes Your Invisible Knowledge.',
-    p: 'By capturing your organization’s invisible knowledge, our AI agents uncover deep operational pains and untapped opportunities for improvement. Get a clear, prioritized roadmap so you know exactly where to attack first—driving massive productivity gains and giving you the head start needed to become your industry’s next success story.',
+    p: 'Going beyond standard processes, our AI agents uncover deep operational pains and untapped opportunities for improvement. Get a clear, prioritized roadmap so you know exactly where to attack first-driving massive productivity gains and giving you the head start needed to become your industry’s next success story.',
     cta: 'Join the Waitlist',
     footnote: 'Spots are strictly limited. Join the waitlist to secure your early competitive edge.',
   },
@@ -132,10 +132,12 @@ export default {
     jobTitlePh: 'Job title / role',
     objectivePh: 'Primary objective',
     objectiveAria: 'Primary objective',
+    heardAboutPh: 'How did you learn about bizMRI?',
+    heardAboutAria: 'How did you learn about bizMRI?',
     submit: 'Submit Application',
     submitting: 'Submitting...',
     legal: 'By applying, you agree to our Beta Terms of Service. We respect your data privacy.',
-    errSelect: 'Please select company size and primary objective.',
+    errRequired: 'Please enter your email, full name, and company name.',
     errGeneric: 'Something went wrong. Please try again.',
     errNetwork: 'Network error. Please check your connection.',
     companySizes: [
@@ -149,6 +151,13 @@ export default {
       { value: 'ai-automation', label: 'Identify AI automation opportunities' },
       { value: 'reduce-bottlenecks', label: 'Reduce operational bottlenecks' },
       { value: 'replace-consulting', label: 'Replace slow consulting audits' },
+    ],
+    heardAboutOptions: [
+      { value: 'search_engine', label: 'Search engine' },
+      { value: 'social_media', label: 'Social media' },
+      { value: 'linkedin', label: 'LinkedIn' },
+      { value: 'event', label: 'Event' },
+      { value: 'colleague', label: 'Colleague / Friend' },
     ],
   },
   contactPage: {
@@ -188,7 +197,7 @@ export default {
       },
       {
         h: '7. Limitation of liability',
-        p: 'To the fullest extent permitted by law, bizMRI and its suppliers shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or for loss of profits, data, or goodwill. Our aggregate liability for any claim arising out of these Terms or the Service shall not exceed the greater of (a) amounts you paid us for the Service in the twelve months before the claim or (b) one hundred U.S. dollars (US$100), if you have not paid fees.',
+        p: 'To the fullest extent permitted by law, bizMRI and its suppliers shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or for loss of profits, data, or goodwill. Our total liability for any claim relating to these Terms or the Service shall be limited to the fullest extent allowed by applicable law and any separate agreement between you and bizMRI.',
       },
       {
         h: '8. Changes',

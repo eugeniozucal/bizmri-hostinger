@@ -40,14 +40,19 @@ function stepIcons() {
 function stepCardClass({ isCarousel, hoveredIdx, i }) {
   const base =
     'relative flex min-h-0 flex-col rounded-lg border border-white/10 bg-neutral-900/80 transition-all duration-300 cursor-default'
-  const hover =
+  /** Carousel runs inside overflow-x — no scale (clips top/bottom); grid can scale on sm+. */
+  const hoverCarousel =
+    hoveredIdx === i
+      ? 'border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.45)] z-10'
+      : 'shadow-[0_2px_8px_rgba(0,0,0,0.25)]'
+  const hoverGrid =
     hoveredIdx === i
       ? 'shadow-[0_2px_8px_rgba(0,0,0,0.3)] sm:scale-[1.03] sm:border-white/20 sm:shadow-[0_8px_30px_rgba(0,0,0,0.45)]'
       : 'shadow-[0_2px_8px_rgba(0,0,0,0.25)]'
   if (isCarousel) {
-    return `${base} ${hover} w-[min(92vw,22rem)] shrink-0 snap-center p-4 min-h-[200px]`
+    return `${base} ${hoverCarousel} w-[min(92vw,22rem)] shrink-0 snap-center p-4 min-h-[200px] cursor-inherit`
   }
-  return `${base} ${hover} rounded-md p-2.5 sm:rounded-lg sm:p-5 md:p-6`
+  return `${base} ${hoverGrid} rounded-md p-2.5 sm:rounded-lg sm:p-5 md:p-6`
 }
 
 export function HowItWorks() {
@@ -62,7 +67,14 @@ export function HowItWorks() {
     const root = scrollRef.current
     if (!root) return
     const slide = root.querySelector(`[data-carousel-index="${index}"]`)
-    slide?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    if (!slide) return
+    const reduce =
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const behavior = reduce ? 'auto' : 'smooth'
+    const targetLeft = slide.offsetLeft - (root.clientWidth - slide.offsetWidth) / 2
+    const maxScroll = Math.max(0, root.scrollWidth - root.clientWidth)
+    const left = Math.max(0, Math.min(targetLeft, maxScroll))
+    root.scrollTo({ left, behavior })
   }, [])
 
   useEffect(() => {
@@ -87,6 +99,54 @@ export function HowItWorks() {
 
     slides.forEach((el) => io.observe(el))
     return () => io.disconnect()
+  }, [steps])
+
+  /** Horizontal scroll: wheel (vertical delta → scrollLeft), mouse drag, touch uses native pan + touch-pan-x */
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    const onWheel = (e) => {
+      if (el.scrollWidth <= el.clientWidth + 1) return
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return
+      el.scrollLeft += e.deltaY
+      e.preventDefault()
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+
+    let dragging = false
+    let startX = 0
+    let startScroll = 0
+
+    const onMouseDown = (e) => {
+      if (e.button !== 0) return
+      dragging = true
+      startX = e.pageX
+      startScroll = el.scrollLeft
+      document.body.style.userSelect = 'none'
+    }
+    const onMouseMove = (e) => {
+      if (!dragging) return
+      el.scrollLeft = startScroll - (e.pageX - startX)
+    }
+    const endDrag = () => {
+      document.body.style.userSelect = ''
+      dragging = false
+    }
+
+    el.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', endDrag)
+    window.addEventListener('blur', endDrag)
+
+    return () => {
+      document.body.style.userSelect = ''
+      el.removeEventListener('wheel', onWheel)
+      el.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', endDrag)
+      window.removeEventListener('blur', endDrag)
+    }
   }, [steps])
 
   const cardInner = (step, i, isCarousel) => (
@@ -131,8 +191,9 @@ export function HowItWorks() {
         <div className="lg:hidden -mx-4 sm:-mx-6">
           <div
             ref={scrollRef}
-            className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 pb-1 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-pl-4 scroll-pr-4"
+            className="flex gap-3 overflow-x-auto overscroll-x-contain snap-x snap-mandatory touch-pan-x py-2 px-4 sm:px-6 pb-1 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-pl-4 scroll-pr-4 cursor-grab active:cursor-grabbing"
             aria-roledescription="carousel"
+            aria-label={t('blueprint.h2')}
           >
             {steps.map((step, i) => (
               <div
